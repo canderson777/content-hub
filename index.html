@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand C — Content Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E14;
+    --panel:#11151E;
+    --panel-2:#1E2938;
+    --line:#334155;
+    --line-soft:#1c2533;
+    --ink:#FFFFFF;
+    --ink-2:#CBD5E1;
+    --ink-3:#94A3B8;
+    --ink-4:#64748B;
+    --gold:#FFB703;
+    --gold-tint:rgba(255,183,3,.06);
+    --gold-tint-2:rgba(255,183,3,.18);
+    --danger:#F87171;
+    --ok:#4ADE80;
+    --radius:6px;
+    --head:"Montserrat",sans-serif;
+    --body:"Open Sans",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--body);
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  body.light{
+    --bg:#F8FAFC;
+    --panel:#FFFFFF;
+    --panel-2:#F1F5F9;
+    --line:#CBD5E1;
+    --line-soft:#E2E8F0;
+    --ink:#0F172A;
+    --ink-2:#334155;
+    --ink-3:#64748B;
+    --ink-4:#94A3B8;
+    --gold:#D97706;
+    --gold-tint:rgba(217,119,6,.08);
+    --gold-tint-2:rgba(217,119,6,.18);
+  }
+  h1,h2,h3,h4{font-family:var(--head);font-weight:600;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  button{font-family:var(--body);cursor:pointer;border:none;background:none;color:inherit;font-size:13px}
+  .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+  /* ---------- Sidebar ---------- */
+  .side{background:var(--panel);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .brand{display:flex;align-items:center;gap:10px;padding:20px 18px 18px}
+  .brand .mark{width:30px;height:30px;border-radius:8px;background:var(--gold);display:grid;place-items:center;color:#000;font-family:var(--head);font-weight:700;font-size:15px}
+  .brand .name{font-family:var(--head);font-weight:600;font-size:14px;line-height:1.15}
+  .brand .name span{display:block;color:var(--ink-3);font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  .nav{padding:6px 10px;overflow-y:auto;flex:1}
+  .nav .grp{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-4);padding:16px 8px 7px;font-weight:600}
+  .nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius);color:var(--ink-2);font-size:13.5px;margin-bottom:1px}
+  .nav a .ic{width:16px;text-align:center;color:var(--ink-3);font-size:14px}
+  .nav a:hover{background:rgba(255,255,255,.04);color:var(--ink)}
+  .nav a.on{background:var(--gold-tint-2);color:var(--ink);font-weight:600}
+  .nav a.on .ic{color:var(--gold)}
+  .nav a .cnt{margin-left:auto;font-size:11px;color:#000;background:var(--gold);border-radius:20px;padding:1px 7px;font-weight:600}
+  .side .foot{padding:14px 18px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--ink-4)}
+
+  /* ---------- Main ---------- */
+  .main{display:flex;flex-direction:column;min-width:0}
+  .top{
+    display:flex;align-items:center;gap:16px;padding:16px 28px;
+    border-bottom:1px solid var(--line-soft);background:rgba(17,21,30,.6);
+    position:sticky;top:0;z-index:5;backdrop-filter:blur(6px)
+  }
+  .top .client{font-family:var(--head);font-weight:600;font-size:15px}
+  .top .client small{display:block;font-family:var(--body);color:var(--ink-3);font-weight:400;font-size:12px}
+  .brand-selector{display:flex;align-items:center;gap:8px;color:var(--ink-3);font-size:11px;font-weight:600}
+  .brand-selector select{min-width:150px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);padding:7px 9px;font-family:var(--body);font-size:12px}
+  .brand-selector select:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .top .spacer{flex:1}
+  .pill{border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--ink-2)}
+  .pill b{color:var(--ink)}
+  .btn{background:var(--gold);color:#000;font-weight:600;border-radius:var(--radius);padding:9px 15px;font-size:13px}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--ink)}
+  .btn.sm{padding:5px 11px;font-size:12px}
+
+  .view{padding:28px;display:none}
+  .view.on{display:block}
+  .vh{margin-bottom:22px}
+  .vh h1{font-size:23px}
+  .vh p{color:var(--ink-3);margin-top:5px;font-size:13.5px}
+
+  /* ---------- Hero / Getting Started ---------- */
+  .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 20px 60px;max-width:880px;margin:0 auto}
+  .hero-art{position:relative;width:340px;height:200px;display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+  .hero-art .ring{position:absolute;inset:15px 40px;border-radius:50%;border:1px solid rgba(255,183,3,.25);box-shadow:0 0 35px rgba(255,183,3,.15);pointer-events:none}
+  .hero-art .orb{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,183,3,.18) 0%,transparent 70%);pointer-events:none}
+  .hero-art .cluster{position:relative;z-index:2;display:flex;align-items:center;gap:12px}
+  .hero-art .tile{width:46px;height:46px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink-2);box-shadow:0 10px 24px rgba(0,0,0,.4)}
+  .hero-art .tile svg{width:20px;height:20px;display:block}
+  .hero-art .tile.mid{width:90px;height:64px;border-radius:12px;background:var(--panel);border:1px solid var(--gold);color:var(--gold);box-shadow:0 0 24px rgba(255,183,3,.25)}
+  .hero-art .tile.mid svg{width:28px;height:28px;display:block}
+  .hero h1{font-size:28px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+  .hero p{font-size:14px;color:var(--ink-3);margin-bottom:32px}
+  
+  .wf{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;width:100%;margin-bottom:44px}
+  .wfc{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;transition:border-color .15s,transform .15s}
+  .wfc:hover{border-color:var(--accs,var(--gold));transform:translateY(-2px)}
+  .wfc .badge{width:36px;height:36px;border-radius:8px;background:var(--acc,var(--gold-tint-2));color:var(--accs,var(--gold));display:grid;place-items:center;margin-bottom:12px}
+  .wfc .badge svg{width:18px;height:18px;display:block}
+  .wfc .lb{font-family:var(--head);font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+  .wfc .sb{font-size:11.5px;color:var(--ink-4);line-height:1.35}
+
+  .pub{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .pub .pl{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);font-weight:600}
+  .pub .soc{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .pub .soc .soc-item{width:48px;height:48px;min-height:48px;padding:5px;border:1px solid var(--channel-border,var(--line));border-radius:13px;background:var(--channel-bg,var(--panel-2));color:var(--ink);display:grid;place-items:center;flex:none}
+  .pub .soc .soc-icon{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--channel-color,var(--ink-2));flex:none}
+  .pub .soc .soc-icon svg{width:26px;height:26px;display:block}
+  .pub .soc .soc-item[data-channel="youtube"]{--channel-color:#FF0000;--channel-bg:rgba(255,0,0,.10);--channel-border:rgba(255,0,0,.34)}
+  .pub .soc .soc-item[data-channel="x"]{--channel-color:#F7F9F9;--channel-bg:rgba(255,255,255,.07);--channel-border:rgba(255,255,255,.24)}
+  .pub .soc .soc-item[data-channel="facebook"]{--channel-color:#0866FF;--channel-bg:rgba(8,102,255,.11);--channel-border:rgba(8,102,255,.34)}
+  .pub .soc .soc-item[data-channel="linkedin"]{--channel-color:#0A66C2;--channel-bg:rgba(10,102,194,.13);--channel-border:rgba(10,102,194,.38)}
+  .pub .soc .soc-item[data-channel="instagram"]{--channel-color:#E1306C;--channel-bg:rgba(225,48,108,.11);--channel-border:rgba(225,48,108,.36)}
+  .pub .soc .soc-item[data-channel="instagram"] .soc-icon{background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);color:#fff}
+  .pub .soc .soc-item[data-channel="email"]{--channel-color:#60A5FA;--channel-bg:rgba(96,165,250,.10);--channel-border:rgba(96,165,250,.32)}
+  body.light .pub .soc .soc-item[data-channel="x"]{--channel-color:#0F1419;--channel-bg:rgba(15,20,25,.05);--channel-border:rgba(15,20,25,.22)}
+
+  /* ---------- Launcher stages ---------- */
+  .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:30px}
+  .stage{
+    background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);
+    padding:18px 16px;text-align:left;transition:border-color .15s,transform .15s;position:relative;overflow:hidden
+  }
+  .stage:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .stage .n{font-family:var(--head);font-size:12px;color:var(--ink-4);font-weight:600}
+  .stage .t{font-family:var(--head);font-size:15px;font-weight:600;margin:9px 0 5px}
+  .stage .d{font-size:12px;color:var(--ink-3);line-height:1.45}
+  .stage::after{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--gold);opacity:0}
+  .stage:hover::after{opacity:1}
+
+  /* ---------- Publish-everywhere row ---------- */
+  .publish{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:16px;margin-bottom:30px}
+  .publish .lbl{font-family:var(--head);font-weight:600;font-size:13.5px}
+  .publish .lbl small{display:block;font-family:var(--body);color:var(--ink-3);font-weight:400;font-size:11.5px}
+  .chans{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+  .chan{border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:12.5px;color:var(--ink-2);display:flex;align-items:center;gap:7px}
+  .chan i{width:7px;height:7px;border-radius:2px;background:var(--gold)}
+
+  /* ---------- Section head ---------- */
+  .sh{display:flex;align-items:baseline;gap:12px;margin:0 0 12px}
+  .sh h3{font-size:15px}
+  .sh .more{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+  .sh .more:hover{color:var(--gold)}
+
+  /* ---------- Queue / table ---------- */
+  .card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+  td{padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:13px;color:var(--ink-2);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(255,255,255,.015)}
+  .tt{color:var(--ink);font-weight:600;font-family:var(--head);font-size:13px}
+  .tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;border:1px solid var(--line);color:var(--ink-3)}
+  .tag.reel{border-color:var(--gold-tint-2);color:var(--gold)}
+  .st{font-size:11.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .st .dot{width:7px;height:7px;border-radius:50%}
+  .st.pending .dot{background:var(--gold)}
+  .st.approved .dot{background:var(--ok)}
+  .st.draft .dot{background:var(--ink-4)}
+  .row-actions{display:flex;gap:6px;justify-content:flex-end}
+  .act{border:1px solid var(--line);border-radius:var(--radius);padding:4px 10px;font-size:12px;color:var(--ink-2)}
+  .act:hover{border-color:var(--gold);color:var(--ink)}
+  .act.primary{border-color:var(--gold);color:var(--gold)}
+  .act.primary:hover{background:var(--gold);color:#000}
+  .record-copy{max-width:520px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink-2);font-size:12px;margin-top:7px}
+  .record-meta{font-size:11px;color:var(--ink-4);margin-top:4px}
+  .record-actions{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+  .record-empty{padding:22px;text-align:center;color:var(--ink-3);font-size:13px}
+  .record-status{min-height:20px;margin:0 0 12px;color:var(--ink-3);font-size:12px}
+  .record-status.error{color:var(--danger)}
+  .record-editor-row td{background:var(--panel-2)}
+  .record-editor{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 0}
+  .record-editor .field.full{grid-column:1/-1}
+  .record-editor textarea{min-height:120px}
+  .channel-editor-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:16px;align-items:start}
+  .channel-editor-form{padding:18px}
+  .channel-editor-form .field{margin-bottom:12px}
+  .channel-editor-form textarea{min-height:120px;resize:vertical}
+  .channel-editor-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .channel-helper-box{margin-bottom:14px;padding:12px;background:var(--surface);border:1px dashed var(--line-soft);border-radius:var(--radius)}
+  .channel-helper-box summary{font-weight:600;font-size:12.5px;cursor:pointer;color:var(--ink-2);user-select:none}
+  .channel-helper-content{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+  .channel-helper-row{display:flex;gap:8px;align-items:center}
+  .channel-helper-row select{flex:1}
+  .channel-helper-help{font-size:11.5px;color:var(--ink-4);line-height:1.4}
+  .channel-record-list{display:flex;flex-direction:column;gap:10px;max-height:700px;overflow:auto}
+  .channel-record-card{padding:14px;border:1px solid var(--line-soft);border-radius:var(--radius);background:var(--panel)}
+  .channel-record-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .channel-record-card h3{font-size:14px;overflow-wrap:anywhere}
+  .channel-record-meta{font-size:11px;color:var(--ink-4);margin-top:4px}
+  .channel-record-brief,.channel-record-body{margin-top:8px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:var(--ink-2)}
+  .channel-record-body{max-height:260px;overflow:auto}
+  .channel-record-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .channel-handoff-note{margin-top:10px;color:var(--ink-4);font-size:11.5px}
+  .status-label{white-space:nowrap}
+  .st.status-needs-review .dot{background:var(--gold)}
+  .st.status-changes-requested .dot{background:var(--danger)}
+  .st.status-skipped .dot{background:var(--ink-4)}
+  .st.status-approved .dot{background:#60A5FA}
+  .st.status-scheduled .dot{background:#818cf8}
+  .st.status-confirmed-published .dot{background:var(--ok)}
+
+  /* ---------- Calendar ---------- */
+  .calendar-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .calendar-toolbar h2{font-size:17px;min-width:180px}
+  .calendar-nav{display:flex;gap:6px;margin-left:auto}
+  .calendar-wrap{overflow-x:auto}
+  .calendar-note{color:var(--ink-4);font-size:11.5px;margin-top:10px}
+  .cal{min-width:700px}
+  .ev.status-draft{border-left-color:var(--ink-4);background:rgba(100,116,139,.08)}
+  .ev.status-needs-review{border-left-color:var(--gold)}
+  .ev.status-changes-requested{border-left-color:var(--danger);background:rgba(248,113,113,.07)}
+  .ev.status-skipped{border-left-color:var(--ink-4);background:rgba(100,116,139,.08)}
+  .ev.status-approved{border-left-color:#60A5FA;background:rgba(96,165,250,.07)}
+  .ev.status-scheduled{border-left-color:#818cf8;background:rgba(129,140,248,.08)}
+  .ev.status-confirmed-published{border-left-color:var(--ok);background:rgba(74,222,128,.06)}
+  .content-dialog{width:min(560px,calc(100vw - 32px));max-height:90vh;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:22px;margin:auto;box-shadow:0 20px 60px rgba(0,0,0,.55)}
+  .content-dialog::backdrop{background:rgba(0,0,0,.65)}
+  .content-dialog h2{font-size:17px;margin-bottom:5px}
+  .content-dialog p{color:var(--ink-3);font-size:12px;margin-bottom:14px}
+  .content-dialog .dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+  .content-dialog .dialog-status{min-height:18px;color:var(--ink-3);font-size:11.5px;margin-top:8px}
+  .content-dialog .dialog-status.error{color:var(--danger)}
+  .content-submit-copy{max-height:140px;overflow:auto;padding:10px;background:var(--panel-2);border-radius:var(--radius);white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:var(--ink-2);margin:10px 0}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden}
+  .cal .d{background:var(--panel);min-height:112px;padding:9px}
+  .cal .d.head{min-height:auto;padding:7px 9px}
+  .cal .d.head .dh{margin-bottom:0}
+  .cal .d .dh{font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:7px}
+  .cal .d .dh b{color:var(--ink-2);float:right;font-weight:600}
+  .ev{background:var(--gold-tint);border-left:2px solid var(--gold);border-radius:3px;padding:4px 7px;font-size:11px;color:var(--ink-2);margin-bottom:4px}
+  .ev.done{border-left-color:var(--ok);background:rgba(74,222,128,.06)}
+  .ev.blog{border-left-color:#38bdf8;background:rgba(56,189,248,.06)}
+  .ev.li{border-left-color:#818cf8;background:rgba(129,140,248,.06)}
+
+  /* ---------- Reporting ---------- */
+  .reporting-status{min-height:20px;margin:0 0 14px;color:var(--ink-3);font-size:12px}
+  .reporting-status.error{color:var(--danger)}
+  .reporting-source-list{display:flex;flex-direction:column;gap:12px;max-height:640px;overflow:auto}
+  .reporting-brand{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:16px}
+  .reporting-brand h3{font-size:14px;margin-bottom:2px}
+  .rb-sub{font-size:11.5px;color:var(--ink-4);margin-bottom:12px}
+  .reporting-source{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line-soft)}
+  .reporting-source:first-child{border-top:none}
+  .rs-dot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:5px}
+  .reporting-source.verified .rs-dot{background:var(--ok)}
+  .reporting-source.account_available .rs-dot{background:var(--gold)}
+  .reporting-source.not_connected .rs-dot{background:var(--ink-4)}
+  .rs-kind{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-4);font-weight:700}
+  .rs-label{font-weight:600;font-size:13px;color:var(--ink)}
+  .rs-desc{font-size:12px;color:var(--ink-2);margin-top:2px;line-height:1.45}
+  .rs-metrics{font-family:var(--head);font-weight:700;font-size:15px;color:var(--gold);margin-top:6px}
+  .rs-window{font-size:11px;color:var(--ink-4);margin-top:2px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .stat{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:16px}
+  .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-4);font-weight:600}
+  .stat .v{font-family:var(--head);font-size:26px;font-weight:700;margin-top:7px}
+  .stat .v small{font-size:12px;color:var(--ink-3);font-weight:500;font-family:var(--body)}
+  .two{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+  .pad{padding:18px}
+  .pad h3{font-size:14px;margin-bottom:12px}
+  .win{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+  .win:last-child{border-bottom:none}
+  .win .rank{font-family:var(--head);font-weight:700;color:var(--gold);font-size:15px;width:22px;flex:none}
+  .win .wt{font-size:13px;color:var(--ink)}
+  .win .wm{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+  .next li{list-style:none;font-size:13px;color:var(--ink-2);padding:8px 0;border-bottom:1px solid var(--line-soft);display:flex;gap:9px}
+  .next li:last-child{border-bottom:none}
+  .next li::before{content:"→";color:var(--gold);flex:none}
+  .note{margin-top:22px;font-size:12px;color:var(--ink-4);border-top:1px solid var(--line-soft);padding-top:14px}
+  .empty{color:var(--ink-4);font-size:12.5px;padding:8px 0}
+
+  /* ---------- Brand assets ---------- */
+  .agrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .asset{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;position:relative}
+  .asset .thumb{aspect-ratio:4/3;background:var(--panel-2);display:grid;place-items:center;color:var(--ink-4);font-size:26px;position:relative;overflow:hidden}
+  .asset .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .asset .thumb img.contain{object-fit:contain;padding:12px;background:rgba(0,0,0,.25)}
+  .asset .thumb .color-preview{width:100%;height:100%;display:grid;place-items:center;font-weight:700;font-size:12px;font-family:monospace;letter-spacing:.05em}
+  .asset .meta{padding:10px 12px}
+  .asset .meta .an{font-size:12.5px;color:var(--ink);font-weight:600;font-family:var(--head)}
+  .asset .meta .ak{font-size:11px;color:var(--ink-4);margin-top:2px}
+  .asset .rm{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:6px;background:rgba(11,14,20,.85);border:1px solid var(--line);color:var(--ink-3);font-size:13px;display:grid;place-items:center;opacity:0;transition:opacity .15s}
+  .asset:hover .rm{opacity:1}
+  .asset .rm:hover{border-color:var(--danger);color:var(--danger)}
+  .asset.add{border-style:dashed;display:grid;place-items:center;min-height:152px;color:var(--ink-3);cursor:pointer;text-align:center;font-size:12.5px}
+  .asset.add:hover{border-color:var(--gold);color:var(--ink)}
+  .asset.add .plus{font-size:22px;display:block;margin-bottom:6px}
+  .asset-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .asset-control{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--ink-3);font-weight:600}
+  .asset-control select{min-width:170px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);padding:9px 11px;font-family:var(--body);font-size:12px;outline:none}
+  .asset-control select:focus{border-color:var(--gold)}
+  .asset-sync{font-size:11px;color:var(--ink-4);min-width:180px;flex:1;padding-bottom:8px}
+  .asset-sync.online{color:var(--ok)}
+  .asset-sync.offline,.asset-sync.error{color:var(--danger)}
+  .asset .ak.review-needed{color:var(--gold);font-weight:600}
+  .asset-open{position:absolute;top:8px;right:8px;padding:5px 8px;border-radius:5px;background:rgba(11,14,20,.88);border:1px solid var(--line);color:var(--ink-2);font-size:10px;opacity:0;transition:opacity .15s}
+  .asset:hover .asset-open{opacity:1}
+  .asset-open:hover{border-color:var(--gold);color:var(--gold)}
+  .asset-empty{grid-column:1/-1;padding:28px;background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);color:var(--ink-3);font-size:13px;line-height:1.5}
+  .asset-empty b{display:block;color:var(--ink);margin-bottom:5px}
+  .asset-empty span{color:var(--ink-4);font-size:12px}
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .bar .sp{flex:1}
+  .bar input.url{flex:2;min-width:240px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);padding:9px 12px;font-family:var(--body);font-size:13px;outline:none}
+  .bar input.alt{flex:1.5;min-width:200px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);padding:9px 12px;font-family:var(--body);font-size:13px;outline:none}
+  .bar input:focus{border-color:var(--gold)}
+  details.ext{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:10px 14px;font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
+  details.ext summary{cursor:pointer;color:var(--ink-2);font-weight:600;font-size:12.5px;user-select:none}
+  details.ext p{margin-top:8px;line-height:1.5;color:var(--ink-4)}
+
+  /* ---------- Thumbnail gallery ---------- */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px}
+  .tcard{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s}
+  .tcard:hover{border-color:var(--gold);transform:translateY(-2px)}
+  .tcard .tt-img{aspect-ratio:16/9;background:repeating-linear-gradient(45deg,transparent,transparent 9px,rgba(255,255,255,.02) 9px,rgba(255,255,255,.02) 18px);position:relative;display:grid;place-items:center;color:var(--ink-4);overflow:hidden}
+  .tcard .tt-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+  .tcard .tt-img .cm{border:1px solid var(--line);border-radius:4px;padding:3px 7px;font-size:10px;background:rgba(11,14,20,.7);position:relative;z-index:2}
+  .tcard .test-pkg-btn{width:100%;margin-top:10px;background:var(--gold-tint);border:1px solid var(--gold-tint-2);color:var(--gold);padding:6px 10px;border-radius:4px;font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s,border-color .15s}
+  .tcard .test-pkg-btn:hover{background:var(--gold);color:#000}
+  .tcard .tt-b{padding:11px 12px}
+  .tcard .tt-b .h{font-family:var(--head);font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .tcard .tt-b .m{font-size:11px;color:var(--ink-4);margin-top:6px;display:flex;gap:9px;flex-wrap:wrap}
+  .tcard .tt-b .m .out{color:var(--gold)}
+
+  /* ---------- Packaging studio ---------- */
+  .pkg{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:11.5px;color:var(--ink-3);margin-bottom:5px;font-weight:600}
+  .field input,.field select,.field textarea{width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);padding:9px 11px;font-family:var(--body);font-size:13px;outline:none}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+  .field textarea{resize:vertical;min-height:62px}
+
+  /* ---------- Social Studio ---------- */
+  .social-layout{display:grid;grid-template-columns:minmax(250px,.85fr) minmax(0,1.15fr);gap:16px;align-items:start}
+  .social-platforms{border:0;padding:0;margin:0 0 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .social-platforms legend{grid-column:1/-1;font-size:11.5px;color:var(--ink-3);font-weight:600;margin-bottom:2px}
+  .social-platform{display:flex;align-items:center;gap:9px;padding:8px 10px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;transition:border-color .15s,background .15s}
+  .social-platform input{accent-color:var(--platform-color,var(--gold));flex:none}
+  .social-platform.selected{border-color:var(--platform-color,var(--gold));background:var(--platform-tint,var(--gold-tint))}
+  .social-platform .platform-mark{width:27px;height:27px;border-radius:7px;background:var(--platform-tint,rgba(255,255,255,.06));color:var(--platform-color,var(--ink-2));display:grid;place-items:center;font-size:13px;font-weight:700;line-height:1;flex:none}
+  .social-platform[data-platform="facebook"]{--platform-color:#0866FF;--platform-tint:rgba(8,102,255,.13)}
+  .social-platform[data-platform="instagram"]{--platform-color:#E1306C;--platform-tint:rgba(225,48,108,.13)}
+  .social-platform[data-platform="linkedin"]{--platform-color:#0A66C2;--platform-tint:rgba(10,102,194,.14)}
+  .social-platform[data-platform="x"]{--platform-color:var(--ink);--platform-tint:rgba(255,255,255,.08)}
+  .social-status{min-height:20px;margin-top:9px;font-size:11.5px;color:var(--ink-3)}
+  .social-status.error{color:var(--danger)}
+  .social-output-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .social-output-head h2{font-size:15px}
+  .social-output-head .sp{flex:1}
+  .social-drafts{display:grid;gap:12px}
+  .social-draft-card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:14px}
+  .social-draft-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  .social-draft-head .platform-mark{width:28px;height:28px;border-radius:7px;display:grid;place-items:center;background:var(--platform-tint);color:var(--platform-color);font-size:13px;font-weight:700}
+  .social-draft-head h3{font-size:13px}
+  .social-draft-head .tag{margin-left:auto}
+  .social-draft-field{margin-bottom:0}
+  .social-draft-field textarea{min-height:136px;line-height:1.5}
+  .social-draft-meta{display:flex;justify-content:flex-end;margin-top:5px;font-size:10.5px;color:var(--ink-4)}
+  .social-draft-meta.over-limit{color:var(--danger)}
+  .social-empty{padding:20px;background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);color:var(--ink-3);font-size:12.5px}
+  .organizer-section{margin-top:30px;padding-top:24px;border-top:1px solid var(--line-soft)}
+  .organizer-section-head{margin-bottom:14px}
+  .organizer-section-head h2{font-size:17px}
+  .organizer-section-head p{margin-top:4px;color:var(--ink-3);font-size:12.5px}
+  .organizer-layout{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1.15fr);gap:16px;align-items:start}
+  .organizer-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .organizer-platforms{border:0;padding:0;margin:0 0 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .organizer-platforms legend{grid-column:1/-1;font-size:11.5px;color:var(--ink-3);font-weight:600;margin-bottom:2px}
+  .organizer-platform{display:flex;align-items:center;gap:8px;padding:8px 9px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);cursor:pointer;font-size:12px;color:var(--ink-2)}
+  .organizer-platform input{accent-color:var(--gold);flex:none}
+  .organizer-status{min-height:20px;margin-top:9px;font-size:11.5px;color:var(--ink-3)}
+  .organizer-status.error{color:var(--danger)}
+  .organizer-note{margin-top:13px;padding-top:11px;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--ink-4);line-height:1.5}
+  .organizer-list{display:grid;gap:12px}
+  .organizer-empty{padding:18px;background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);color:var(--ink-3);font-size:12.5px}
+  .organizer-card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:14px}
+  .organizer-card-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+  .organizer-card-head h3{font-size:13px;line-height:1.4}
+  .organizer-card-head .tag{margin-left:auto;white-space:nowrap}
+  .organizer-card-meta{font-size:11px;color:var(--ink-4);margin-top:3px}
+  .organizer-delete{flex:none;border:1px solid var(--line);border-radius:var(--radius);padding:4px 8px;color:var(--ink-3);font-size:11px}
+  .organizer-delete:hover{border-color:var(--danger);color:var(--danger)}
+  .organizer-brief{background:var(--panel-2);border-radius:var(--radius);padding:10px;margin-bottom:10px;font-size:11.5px;color:var(--ink-3);white-space:pre-wrap;overflow-wrap:anywhere;max-height:110px;overflow:auto}
+  .organizer-assets{display:grid;gap:9px}
+  .organizer-asset{border:1px solid var(--line-soft);border-radius:var(--radius);padding:10px;background:rgba(255,255,255,.015)}
+  .organizer-asset-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .organizer-asset-head strong{font-size:12px}
+  .organizer-asset-head .tag{margin-left:auto}
+  .organizer-asset .field{margin-bottom:8px}
+  .organizer-asset .field:last-child{margin-bottom:0}
+  .organizer-asset .field textarea{min-height:88px;line-height:1.5}
+  .organizer-counter{display:flex;justify-content:flex-end;margin-top:4px;font-size:10.5px;color:var(--ink-4)}
+  .organizer-counter.over-limit{color:var(--danger)}
+  .organizer-reference{font-size:11px;color:var(--ink-4);overflow-wrap:anywhere;margin:0 0 8px}
+  .organizer-format-help{font-size:10.5px;color:var(--ink-4);margin-top:4px;line-height:1.4}
+  .organizer-assets-count{font-size:11px;color:var(--ink-4);margin:0 0 8px}
+  .face-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+  .fchip{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);padding:6px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:border-color .15s,background .15s}
+  .fchip:hover{border-color:var(--ink-3);background:rgba(255,255,255,.03)}
+  .fchip.on{border-color:var(--gold);background:var(--gold-tint);box-shadow:0 0 10px rgba(255,183,3,.15)}
+  .fchip img{width:36px;height:36px;object-fit:cover;border-radius:4px;background:rgba(0,0,0,.3);flex:none}
+  .fchip span{font-size:11px;font-weight:600;color:var(--ink-2);line-height:1.2}
+  .fchip.on span{color:var(--gold)}
+  .previews{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pv{border:1px solid var(--line-soft);border-radius:var(--radius);overflow:hidden;background:var(--panel-2)}
+  .pv .pvhd{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-4);padding:8px 10px;border-bottom:1px solid var(--line-soft)}
+  .pv .pvb{aspect-ratio:16/9;display:grid;place-items:center;color:var(--ink-4);font-size:11px;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.02) 8px,rgba(255,255,255,.02) 16px);position:relative;overflow:hidden}
+  .pv .pvb img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ---------- Capability dropdown ---------- */
+  .capwrap{position:relative;padding:0 0 4px}
+  .capbtn{width:calc(100% - 20px);margin:8px 10px 8px;display:flex;align-items:center;gap:8px;background:var(--gold-tint);border:1px solid var(--gold-tint-2);border-radius:var(--radius);color:var(--gold);padding:9px 11px;font-size:12.5px;font-weight:600;font-family:var(--head)}
+  .capbtn .chev{margin-left:auto;transition:transform .15s}
+  .capbtn.open .chev{transform:rotate(180deg)}
+  .capbtn:hover{background:var(--gold-tint-2)}
+  .capmenu{position:absolute;left:10px;right:10px;bottom:calc(100% + 6px);background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px;max-height:62vh;overflow:auto;display:none;z-index:30;box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .capmenu.on{display:block}
+  .capmenu .cg{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);font-weight:600;margin:10px 4px 5px}
+  .capmenu .cg:first-child{margin-top:2px}
+  .capmenu .ci{display:flex;flex-direction:column;gap:1px;padding:7px 8px;border-radius:6px;cursor:pointer}
+  .capmenu .ci:hover{background:rgba(255,255,255,.05)}
+  .capmenu .ci .ct{font-size:12.5px;color:var(--ink);display:flex;align-items:center}
+  .capmenu .ci .cd{font-size:11px;color:var(--ink-4)}
+  .capmenu .ci .live{font-size:9.5px;color:var(--gold);border:1px solid var(--gold-tint-2);border-radius:20px;padding:0 6px;margin-left:7px;font-weight:400}
+  .capmenu .three-ps-card{background:rgba(255,183,3,.05);border:1px solid var(--gold-tint-2);border-radius:8px;padding:10px;margin-top:6px}
+  .capmenu .three-ps-card .tp-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+  .capmenu .three-ps-card .tp-item{font-size:11.5px;color:var(--ink-2);margin-bottom:5px;line-height:1.35}
+  .capmenu .three-ps-card .tp-item b{color:var(--ink);font-weight:600}
+
+  /* ---------- Connections & Settings ---------- */
+  .conn-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  .conn{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px}
+  .conn h3{font-size:15px;margin-bottom:4px}
+  .conn p{font-size:12.5px;color:var(--ink-3);margin-bottom:16px;line-height:1.45}
+  .conn .state{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ok);margin-top:12px}
+  .conn .state .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .p-block{margin-bottom:14px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+  .p-block .p-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gold);margin-bottom:4px}
+  .p-block .p-text{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+  .p-block .p-statement{font-style:italic;color:var(--ink);border-left:2px solid var(--gold);padding-left:10px;margin-top:8px}
+  .brand-profile-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .brand-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .brand-profile-grid .field.full{grid-column:1/-1}
+  .brand-profile-grid .field label{display:block;color:var(--ink-3);font-size:12px;font-weight:600;margin-bottom:5px}
+  .brand-profile-grid textarea{display:block;width:100%;min-height:112px;padding:10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel-2);color:var(--ink);font:12.5px/1.5 var(--body);resize:vertical}
+  .brand-profile-grid textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+  .brand-profile-meta{font-size:11.5px;color:var(--ink-4);margin:10px 0}
+  .brand-profile-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+  .brand-profile-status{min-height:20px;margin:6px 0;color:var(--ink-3);font-size:12px}
+  .brand-profile-status.error{color:var(--danger)}
+
+  @media(max-width:1080px){
+    .conn-grid{grid-template-columns:1fr}
+    .brand-profile-grid{grid-template-columns:1fr}
+    .brand-profile-grid .field.full{grid-column:auto}
+    .stages{grid-template-columns:repeat(2,1fr)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .two{grid-template-columns:1fr}
+    .pkg{grid-template-columns:1fr}
+    .social-layout{grid-template-columns:1fr}
+    .organizer-layout{grid-template-columns:1fr}
+    .channel-editor-grid{grid-template-columns:1fr}
+    .agrid{grid-template-columns:repeat(2,1fr)}
+    .app{grid-template-columns:1fr}
+    .side{position:static;height:auto}
+    .cal{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="brand">
+      <div class="mark">LG</div>
+      <div class="name">Brand C<span>Content Hub</span></div>
+    </div>
+    <nav class="nav">
+      <div class="grp">Overview</div>
+      <a href="#" data-view="home" class="on"><span class="ic">◆</span> Get started</a>
+      <a href="#" data-view="approvals"><span class="ic">✓</span> Approvals <span class="cnt" id="approvalsCount" hidden></span></a>
+      <a href="#" data-view="calendar"><span class="ic">▤</span> Calendar</a>
+
+      <div class="grp">Create &amp; grow</div>
+      <a href="#" data-view="blog"><span class="ic">✎</span> Blog</a>
+      <a href="#" data-view="reels"><span class="ic">▶</span> Reels</a>
+      <a href="#" data-view="social-studio"><span class="ic">✍</span> Social Studio</a>
+      <a href="#" data-view="email"><span class="ic">✉</span> Email</a>
+
+      <div class="grp">Thumbnails</div>
+      <a href="#" data-view="thumbs"><span class="ic">▦</span> Thumbnail gallery</a>
+      <a href="#" data-view="packaging"><span class="ic">✦</span> Packaging studio</a>
+
+      <div class="grp">Results</div>
+      <a href="#" data-view="reporting"><span class="ic">◔</span> Reporting</a>
+
+      <div class="grp">Workspace</div>
+      <a href="#" data-view="assets"><span class="ic">▤</span> Brand assets</a>
+      <a href="#" data-view="connections"><span class="ic">⚙</span> Settings</a>
+    </nav>
+    <div class="capwrap">
+      <button class="capbtn" id="capBtn">⚡ All capabilities <span class="chev">▾</span></button>
+      <div class="capmenu" id="capMenu">
+        <div class="cg">Create &amp; publish</div>
+        <div class="ci" data-go="blog"><div class="ct">Blog articles</div><div class="cd">Get found on Google &amp; AI search</div></div>
+        <div class="ci" data-go="reels"><div class="ct">Reels &amp; short video</div><div class="cd">Captioned, safe-zoned, cut from your work</div></div>
+        <div class="ci" data-go="social-studio"><div class="ct">Social Studio</div><div class="cd">One brief, editable versions for Facebook, Instagram, LinkedIn, and X</div></div>
+        <div class="ci" data-go="email"><div class="ct">Email campaigns</div><div class="cd">Nurture &amp; follow-up notes</div></div>
+        <div class="ci" data-go="thumbs"><div class="ct">Thumbnails &amp; packaging</div><div class="cd">Reference in, your version out</div></div>
+        <div class="cg">Grow &amp; get found</div>
+        <div class="ci" data-go="reporting"><div class="ct">Local SEO &amp; AI search <span class="live">in your plan</span></div><div class="cd">Map Pack, "near me", and AI visibility</div></div>
+        <div class="ci"><div class="ct">Reviews &amp; reputation <span class="live">add</span></div><div class="cd">Turn happy jobs into 5-star proof</div></div>
+        <div class="ci" data-go="calendar"><div class="ct">Content calendar</div><div class="cd">One plan, every channel</div></div>
+        <div class="cg">Strategy &amp; insight</div>
+        <div class="ci" data-go="reporting"><div class="ct">Monthly reporting</div><div class="cd">What shipped, what worked, what's next</div></div>
+        <div class="ci"><div class="ct">Visibility audit <span class="live">in your plan</span></div><div class="cd">Where you're invisible, in 3 fixes</div></div>
+        <div class="ci"><div class="ct">Competitor teardown <span class="live">add</span></div><div class="cd">Who's beating you and why</div></div>
+
+        <div class="cg">Positioning &amp; Brand Context</div>
+        <div class="three-ps-card">
+          <div class="tp-title"><span>Brand Profiles</span><span style="font-size:9.5px;color:var(--ink-4);font-weight:400">selected brand</span></div>
+          <div class="tp-item">Profiles load from the selected Content Hub brand’s source documents. Edits stay in Content Hub.</div>
+          <a href="#" data-go="connections" class="tp-item">Review or edit this brand profile →</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot">Content Hub · local-only</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="top">
+      <div class="client">Content Hub<small id="activeBrandCaption">Shared content records · local only</small></div>
+      <label class="brand-selector" for="activeBrandSelect">Selected brand
+        <select id="activeBrandSelect">
+          <option value="brand-a">Brand A</option>
+          <option value="brand-b">Brand B</option>
+          <option value="brand-c">Brand C</option>
+        </select>
+      </label>
+      <div class="spacer"></div>
+      <button class="btn ghost sm" id="themeBtn">Switch theme</button>
+      <button class="btn ghost sm" data-go="connections">Settings</button>
+      <button class="btn">+ New request</button>
+    </header>
+
+    <!-- HOME -->
+    <section class="view on" id="home">
+      <div class="hero">
+        <div class="hero-art">
+          <span class="orb"></span><span class="ring"></span>
+          <div class="cluster">
+            <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></div>
+            <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-4 4 3 3-2 6 5"/><circle cx="8.6" cy="9.6" r="1.4"/></svg></div>
+            <div class="tile mid"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 7.5l8 4.5-8 4.5z"/></svg></div>
+            <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l2.3 4.9 5.2.7-3.8 3.6.9 5.2L12 15l-4.6 2.4.9-5.2L4.5 8.6l5.2-.7z"/></svg></div>
+            <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+          </div>
+        </div>
+        <h1>Where should we put your business to work today?</h1>
+        <p>Pick a stage below, or run a workflow from the sidebar.</p>
+
+        <div class="wf">
+          <button class="wfc" data-go="thumbs" style="--acc:rgba(127,179,255,.15);--accs:#7FB3FF">
+            <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></span>
+            <span class="lb">Research</span><span class="sb">Find what's working in your market.</span>
+          </button>
+          <button class="wfc" data-go="social-studio" style="--acc:rgba(201,166,255,.15);--accs:#C9A6FF">
+            <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/></svg></span>
+            <span class="lb">Create</span><span class="sb">Social posts, adapted for each platform.</span>
+          </button>
+          <button class="wfc" data-go="packaging" style="--acc:rgba(255,183,3,.16);--accs:#FFB703">
+            <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3l2.3 4.9 5.2.7-3.8 3.6.9 5.2L12 15l-4.6 2.4.9-5.2L4.5 8.6l5.2-.7z"/></svg></span>
+            <span class="lb">Package</span><span class="sb">Thumbnails, titles, and visuals.</span>
+          </button>
+          <button class="wfc" data-go="approvals" style="--acc:rgba(74,222,128,.15);--accs:#4ADE80">
+            <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></span>
+            <span class="lb">Approve</span><span class="sb">Review before anything ships.</span>
+          </button>
+          <button class="wfc" data-go="reporting" style="--acc:rgba(94,234,212,.15);--accs:#5EEAD4">
+            <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V4M4 20h16"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="5" width="3" height="12"/></svg></span>
+            <span class="lb">Report</span><span class="sb">What worked, and what's next.</span>
+          </button>
+        </div>
+
+        <div class="pub">
+          <div class="pl">Distribution channels</div>
+          <div class="soc" role="list" aria-label="Available distribution channels">
+            <span class="soc-item" role="listitem" data-channel="youtube" aria-label="YouTube">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.5-.45-5.2a2.7 2.7 0 0 0-1.9-1.9C18.9 4.5 12 4.5 12 4.5s-6.9 0-8.65.4a2.7 2.7 0 0 0-1.9 1.9C1 8.5 1 12 1 12s0 3.5.45 5.2c.24.9.95 1.6 1.9 1.9 1.75.4 8.65.4 8.65.4s6.9 0 8.65-.4a2.7 2.7 0 0 0 1.9-1.9C23 15.5 23 12 23 12z"/><path d="M10 15.5l6-3.5-6-3.5z" fill="var(--bg)"/></svg></span>
+            </span>
+            <span class="soc-item" role="listitem" data-channel="x" aria-label="X">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 3h3.2l-7 8 8.2 10h-6.4l-5-6.1L4.7 21H1.5l7.5-8.6L1.2 3h6.6l4.5 5.6L17.5 3zm-1.1 16h1.8L7.7 4.8H5.8L16.4 19z"/></svg></span>
+            </span>
+            <span class="soc-item" role="listitem" data-channel="facebook" aria-label="Facebook">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H7.3V13h2.7v8h3.5z"/></svg></span>
+            </span>
+            <span class="soc-item" role="listitem" data-channel="linkedin" aria-label="LinkedIn">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.3c0-1.27-.02-2.9-1.77-2.9-1.77 0-2.04 1.38-2.04 2.8V21H9z"/></svg></span>
+            </span>
+            <span class="soc-item" role="listitem" data-channel="instagram" aria-label="Instagram">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
+            </span>
+            <span class="soc-item" role="listitem" data-channel="email" aria-label="Email">
+              <span class="soc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPROVALS -->
+    <section class="view" id="approvals">
+      <div class="vh"><h1>Approvals</h1><p>Review copies submitted for the selected brand. Approval records a decision only; it does not schedule or publish.</p></div>
+      <div class="record-status" id="approvalStatus" role="status" aria-live="polite">Loading shared content records…</div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Item</th><th>Channel</th><th>Format</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
+          <tbody id="appr-body"></tbody>
+        </table>
+      </div>
+      <div class="note">Records shown here are local to this Content Hub installation. Skipping keeps a record in history; it does not delete the browser-local source draft.</div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="view" id="calendar">
+      <div class="vh"><h1>Calendar</h1><p>Dated content records for the selected brand. A target date is a planning date, not a scheduling action.</p></div>
+      <div class="calendar-toolbar">
+        <h2 id="calendarTitle" aria-live="polite"></h2>
+        <div class="calendar-nav">
+          <button class="btn ghost sm" id="calendarPrev" type="button" aria-label="Previous month">←</button>
+          <button class="btn ghost sm" id="calendarNext" type="button" aria-label="Next month">→</button>
+        </div>
+      </div>
+      <div class="calendar-wrap"><div class="cal" id="cal" aria-label="Content calendar"></div></div>
+      <div class="calendar-note">Calendar entries are loaded from the same brand-scoped records as Approvals. Approval does not schedule or publish.</div>
+    </section>
+
+    <section class="view" id="blog">
+      <div class="vh"><h1>Blog editor</h1><p>Write brand-scoped article drafts, review them, then export an approved copy for a manual CMS handoff.</p></div>
+      <div class="record-status" id="blogEditorStatus" role="status" aria-live="polite">Loading saved Blog records…</div>
+      <div class="channel-editor-grid">
+        <form class="card channel-editor-form" id="blogEditorForm" data-channel-editor="blog" novalidate>
+          <details class="channel-helper-box" open>
+            <summary>Starter blueprint / recipe (cure blank-page block)</summary>
+            <div class="channel-helper-content">
+              <div class="channel-helper-row">
+                <select id="blogStarterTemplate" aria-label="Select a blog blueprint">
+                  <option value="">-- Choose a blog blueprint --</option>
+                  <option value="case-study">How We Solved It (Problem → Fix → Proof)</option>
+                  <option value="myth-vs-reality">Myth vs. Reality (Common Mistake → Truth)</option>
+                  <option value="buyer-guide">Local Buyer / Hiring Guide (Checklist & Questions)</option>
+                  <option value="tool-framework">Actionable Framework (Step-by-step breakdown)</option>
+                </select>
+                <button class="btn ghost sm" type="button" data-channel-apply-template="blog">Load blueprint</button>
+              </div>
+              <div class="channel-helper-help">Loads an outline with clear prompts into the fields below so you never have to start from scratch.</div>
+            </div>
+          </details>
+          <div class="field"><label for="blogEditorTitle">Article title</label><input id="blogEditorTitle" name="title" maxlength="200" required placeholder="Working article title"></div>
+          <div class="field"><label for="blogEditorBrief">Reader problem / angle</label><textarea id="blogEditorBrief" name="brief" maxlength="2000" placeholder="Who is this for, and what should the article help them do?"></textarea></div>
+          <div class="field"><label for="blogEditorTargetDate">Planning target date</label><input id="blogEditorTargetDate" name="targetDate" type="date"></div>
+          <div class="field"><label for="blogEditorBody">Article draft</label><textarea id="blogEditorBody" name="body" maxlength="20000" required placeholder="Write the article draft here."></textarea></div>
+          <div class="channel-editor-actions">
+            <button class="btn" type="submit">Save as draft</button>
+            <button class="btn ghost" type="button" data-channel-submit-review="blog">Submit for review</button>
+            <button class="btn ghost" type="button" data-channel-cancel="blog" hidden>Cancel editing</button>
+          </div>
+          <div class="note">Saves to this Content Hub’s local shared records for the selected brand. It does not move browser drafts or publish, schedule, or send content.</div>
+        </form>
+        <div class="card pad">
+          <div class="social-output-head"><h2>Saved Blog records</h2><span class="sp"></span><strong data-channel-brand-label="blog">Selected brand</strong></div>
+          <div class="channel-record-list" id="blogContentRecords" data-channel-records="blog" aria-live="polite"><div class="record-empty">Loading…</div></div>
+          <div class="channel-handoff-note">A local Markdown handoff is available only after approval. No CMS is connected.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="reels">
+      <div class="vh"><h1>Reels editor</h1><p>Build a short-video working draft for the selected brand. Keep script, caption, and shot notes together for a manual handoff.</p></div>
+      <div class="record-status" id="reelsEditorStatus" role="status" aria-live="polite">Loading saved Reels records…</div>
+      <div class="channel-editor-grid">
+        <form class="card channel-editor-form" id="reelsEditorForm" data-channel-editor="reels" novalidate>
+          <details class="channel-helper-box" open>
+            <summary>Starter structure & hook selectors</summary>
+            <div class="channel-helper-content">
+              <div class="channel-helper-row">
+                <select id="reelsStarterTemplate" aria-label="Select a reel framework">
+                  <option value="">-- Choose a reel framework --</option>
+                  <option value="3-part-reel">3-Part Short Reel (Hook → 3 Points → CTA)</option>
+                  <option value="contrarian-truth">Contrarian Truth ("Stop Doing X")</option>
+                  <option value="faceless-screen">Faceless Screen Demo (B-roll + voiceover)</option>
+                  <option value="before-after">Before & After Transformation</option>
+                </select>
+                <button class="btn ghost sm" type="button" data-channel-apply-template="reels">Load framework</button>
+              </div>
+              <div class="channel-helper-row">
+                <select id="reelsHookLibrary" aria-label="Select a scroll-stopping hook">
+                  <option value="">-- Pick a scroll-stopping hook --</option>
+                  <option value="mistake">Mistake: "The #1 mistake most [Audience] make when trying to [Goal]..."</option>
+                  <option value="curiosity">Curiosity: "Nobody is talking about this simple shortcut for [Topic]..."</option>
+                  <option value="stop-doing">Contrarian: "Stop doing [Common Habit] if you actually want [Result]..."</option>
+                  <option value="quick-fix">Direct: "Here is exactly how I fix [Specific Problem] in under 60 seconds..."</option>
+                  <option value="tools">Resource: "3 free tools every [Audience] needs to start using today..."</option>
+                </select>
+                <button class="btn ghost sm" type="button" data-channel-apply-hook="reels">Insert hook</button>
+              </div>
+              <div class="channel-helper-help">Loads tested formats and opening lines so you don't have to wonder how to start.</div>
+            </div>
+          </details>
+          <div class="field"><label for="reelsEditorTitle">Reel working title</label><input id="reelsEditorTitle" name="title" maxlength="200" required placeholder="Internal label for this Reel"></div>
+          <div class="field"><label for="reelsEditorBrief">Hook / direction</label><textarea id="reelsEditorBrief" name="brief" maxlength="2000" placeholder="What should stop the scroll? Include the angle or CTA."></textarea></div>
+          <div class="field"><label for="reelsEditorTargetDate">Planning target date</label><input id="reelsEditorTargetDate" name="targetDate" type="date"></div>
+          <div class="field"><label for="reelsEditorBody">Script, caption, or shot notes</label><textarea id="reelsEditorBody" name="body" maxlength="20000" required placeholder="Write the spoken script, caption, and production notes."></textarea></div>
+          <div class="channel-editor-actions">
+            <button class="btn" type="submit">Save as draft</button>
+            <button class="btn ghost" type="button" data-channel-submit-review="reels">Submit for review</button>
+            <button class="btn ghost" type="button" data-channel-cancel="reels" hidden>Cancel editing</button>
+          </div>
+          <div class="note">This stores text only. It does not generate media, connect to Instagram, publish, schedule, or send content.</div>
+        </form>
+        <div class="card pad">
+          <div class="social-output-head"><h2>Saved Reel records</h2><span class="sp"></span><strong data-channel-brand-label="reels">Selected brand</strong></div>
+          <div class="channel-record-list" id="reelsContentRecords" data-channel-records="reels" aria-live="polite"><div class="record-empty">Loading…</div></div>
+          <div class="channel-handoff-note">A local Markdown handoff is available only after approval. No publisher is connected.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="social-studio">
+      <div class="vh"><h1>Social Studio</h1><p>Start with one brief, choose your channels, then edit each platform-specific draft before it goes anywhere.</p></div>
+      <div class="social-layout">
+        <div class="card pad">
+          <div class="field">
+            <label for="socialBrief">Shared brief</label>
+            <textarea id="socialBrief" maxlength="2000" placeholder="What do you want to say? Add the key point, proof, offer, or call to action."></textarea>
+            <div class="social-draft-meta" id="socialBriefCount">0 / 2000 characters</div>
+          </div>
+          <fieldset class="social-platforms">
+            <legend>Choose one or more platforms</legend>
+            <label class="social-platform" data-platform="facebook"><input type="checkbox" name="socialPlatform" value="facebook"><span class="platform-mark" aria-hidden="true">f</span><span>Facebook</span></label>
+            <label class="social-platform" data-platform="instagram"><input type="checkbox" name="socialPlatform" value="instagram"><span class="platform-mark" aria-hidden="true">◎</span><span>Instagram</span></label>
+            <label class="social-platform" data-platform="linkedin"><input type="checkbox" name="socialPlatform" value="linkedin"><span class="platform-mark" aria-hidden="true">in</span><span>LinkedIn</span></label>
+            <label class="social-platform" data-platform="x"><input type="checkbox" name="socialPlatform" value="x"><span class="platform-mark" aria-hidden="true">X</span><span>X</span></label>
+          </fieldset>
+          <div class="field" id="socialXFormatField" hidden>
+            <label for="socialXFormat">X content format</label>
+            <select id="socialXFormat">
+              <option value="post">X Post</option>
+              <option value="thread">X Thread</option>
+              <option value="article">X Article</option>
+            </select>
+          </div>
+          <button class="btn" id="createSocialDrafts" type="button">Create draft versions</button>
+          <div class="social-status" id="socialDraftStatus" role="status" aria-live="polite"></div>
+          <div class="note">These are editable, rule-based starter drafts—not AI-generated copy. Drafts save in this browser. Nothing is published or sent to a social account.</div>
+        </div>
+        <div>
+          <div class="social-output-head"><h2>Draft versions</h2><span class="sp"></span><button class="btn ghost sm" id="clearSocialDrafts" type="button">Clear drafts</button></div>
+          <div class="social-empty" id="socialDraftEmpty">Choose one or more platforms and add a shared brief to get started.</div>
+          <div class="social-drafts" id="socialDraftOutputs"></div>
+        </div>
+      </div>
+
+      <div class="organizer-section" id="multi-day-pack">
+        <div class="organizer-section-head">
+          <h2>Multi-day Pack</h2>
+          <p>Plan 2, 3, or 7 days of content. Pick destinations and fill each editable draft slot yourself.</p>
+        </div>
+        <div class="organizer-layout">
+          <form class="card pad" id="multiDayPackForm" novalidate>
+            <div class="field">
+              <label for="multiDayPackTitle">Pack name</label>
+              <input id="multiDayPackTitle" maxlength="80" placeholder="e.g. Spring service launch">
+            </div>
+            <div class="field">
+              <label for="multiDayPackBrief">Anchor brief</label>
+              <textarea id="multiDayPackBrief" maxlength="2000" placeholder="What is the campaign about? Keep the shared context here; add a distinct angle and copy to each slot."></textarea>
+            </div>
+            <div class="organizer-form-row">
+              <div class="field">
+                <label for="multiDayDays">Length</label>
+                <select id="multiDayDays"><option value="2">2 days</option><option value="3">3 days</option><option value="7">7 days</option></select>
+              </div>
+              <div class="field">
+                <label for="multiDayXFormat">X format</label>
+                <select id="multiDayXFormat">
+                  <option value="post">X Post</option>
+                  <option value="thread">X Thread</option>
+                  <option value="article">X Article</option>
+                </select>
+              </div>
+            </div>
+            <fieldset class="organizer-platforms">
+              <legend>Choose one or more destinations</legend>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="facebook"><span>Facebook · Post</span></label>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="instagram"><span>Instagram · Caption</span></label>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="linkedin"><span>LinkedIn · Post</span></label>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="x"><span>X · choose format</span></label>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="blog"><span>Blog · Article</span></label>
+              <label class="organizer-platform"><input type="checkbox" name="multiDayPlatform" value="email"><span>Email</span></label>
+            </fieldset>
+            <button class="btn" id="createMultiDayPack" type="submit">Create local pack</button>
+            <div class="organizer-status" id="multiDayPackStatus" role="status" aria-live="polite"></div>
+            <div class="organizer-note">Local organizer only. Slots start blank for distinct angles and copy. Nothing is AI-generated, published, or sent.</div>
+          </form>
+          <div>
+            <div class="social-output-head"><h2>Saved packs</h2></div>
+            <div class="organizer-list" id="multiDayPackOutputs"><div class="organizer-empty">No local packs yet. Create one to start planning.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="organizer-section" id="repurpose-workflow">
+        <div class="organizer-section-head">
+          <h2>Repurpose</h2>
+          <p>Choose an output type, then edit a local working copy of your source.</p>
+        </div>
+        <div class="organizer-layout">
+          <form class="card pad" id="repurposeForm" novalidate>
+            <div class="field">
+              <label for="repurposeSourceText">Source content</label>
+              <textarea id="repurposeSourceText" maxlength="20000" placeholder="Paste the source text you want to work from."></textarea>
+            </div>
+            <div class="field">
+              <label for="repurposeSourceUrl">Optional source URL</label>
+              <input id="repurposeSourceUrl" type="url" maxlength="2000" placeholder="https://example.com/reference">
+              <div class="organizer-format-help">Reference only. The URL is saved with the draft and is not fetched.</div>
+            </div>
+            <div class="field">
+              <label for="repurposeFormat">Output format</label>
+              <select id="repurposeFormat">
+                <option value="x-post">X Post</option>
+                <option value="x-thread">X Thread</option>
+                <option value="x-article">X Article</option>
+                <option value="facebook-post">Facebook Post</option>
+                <option value="instagram-caption">Instagram Caption</option>
+                <option value="linkedin-post">LinkedIn Post</option>
+                <option value="linkedin-article">LinkedIn Article</option>
+                <option value="blog-article">Blog Article</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+            <button class="btn" id="createRepurposeDraft" type="submit">Create local draft</button>
+            <div class="organizer-status" id="repurposeStatus" role="status" aria-live="polite"></div>
+            <div class="organizer-note">Local mode copies your source as a starting point; it does not rewrite or summarize it. Saved in this browser. Nothing is published or sent.</div>
+          </form>
+          <div>
+            <div class="social-output-head"><h2>Repurpose drafts</h2></div>
+            <div class="organizer-list" id="repurposeDraftOutputs"><div class="organizer-empty">No local repurpose drafts yet. Paste source text and choose a format.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="email">
+      <div class="vh"><h1>Email editor</h1><p>Draft low-pressure email copy for the selected brand. Export is a manual handoff; this workspace does not send email.</p></div>
+      <div class="record-status" id="emailEditorStatus" role="status" aria-live="polite">Loading saved Email records…</div>
+      <div class="channel-editor-grid">
+        <form class="card channel-editor-form" id="emailEditorForm" data-channel-editor="email" novalidate>
+          <details class="channel-helper-box" open>
+            <summary>Single-goal email archetypes</summary>
+            <div class="channel-helper-content">
+              <div class="channel-helper-row">
+                <select id="emailStarterTemplate" aria-label="Select an email archetype">
+                  <option value="">-- Choose an email archetype --</option>
+                  <option value="quick-value">Quick Value Nugget (2-minute practical tip)</option>
+                  <option value="story-lesson">Story / Lesson ("What happened yesterday...")</option>
+                  <option value="soft-offer">Soft-Offer / Check-in ("Still looking for help?")</option>
+                  <option value="curated-bullet">Curated Bullets (1 Big Idea + 2 Resources)</option>
+                </select>
+                <button class="btn ghost sm" type="button" data-channel-apply-template="email">Load archetype</button>
+              </div>
+              <div class="channel-helper-help">Loads single-goal email frameworks with clear next steps that keep emails short and focused.</div>
+            </div>
+          </details>
+          <div class="field"><label for="emailEditorTitle">Subject line</label><input id="emailEditorTitle" name="title" maxlength="200" required placeholder="Email subject"></div>
+          <div class="field"><label for="emailEditorBrief">Audience / CTA angle</label><textarea id="emailEditorBrief" name="brief" maxlength="2000" placeholder="Who is receiving this, and what is the one next step?"></textarea></div>
+          <div class="field"><label for="emailEditorTargetDate">Planning target date</label><input id="emailEditorTargetDate" name="targetDate" type="date"></div>
+          <div class="field"><label for="emailEditorBody">Email body</label><textarea id="emailEditorBody" name="body" maxlength="20000" required placeholder="Write the email body here."></textarea></div>
+          <div class="channel-editor-actions">
+            <button class="btn" type="submit">Save as draft</button>
+            <button class="btn ghost" type="button" data-channel-submit-review="email">Submit for review</button>
+            <button class="btn ghost" type="button" data-channel-cancel="email" hidden>Cancel editing</button>
+          </div>
+          <div class="note">Saves locally in the shared brand-scoped Content Hub. It does not import browser drafts or send, schedule, or publish email.</div>
+        </form>
+        <div class="card pad">
+          <div class="social-output-head"><h2>Saved Email records</h2><span class="sp"></span><strong data-channel-brand-label="email">Selected brand</strong></div>
+          <div class="channel-record-list" id="emailContentRecords" data-channel-records="email" aria-live="polite"><div class="record-empty">Loading…</div></div>
+          <div class="channel-handoff-note">A local Markdown handoff is available only after approval. No email provider is connected.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTING -->
+    <section class="view" id="reporting">
+      <div class="vh"><h1>Reporting sources</h1><p>Verified, read-only connections only. A source shows numbers only when its account is authorized to be read; everything else stays honestly unconnected.</p></div>
+      <div class="reporting-status" id="reportingStatus">Loading source inventory…</div>
+      <div class="reporting-source-list" id="reportingSources"></div>
+      <div class="note">No paid APIs are called. Google Search Console access is read-only (webmasters.readonly) and only for properties where the account has owner permission. Social, newsletter, and store sources require their own read-only connections before any number appears.</div>
+    </section>
+
+    <!-- THUMBNAIL GALLERY -->
+    <section class="view" id="thumbs">
+      <div class="vh"><h1>Thumbnail gallery</h1><p>Collect the packaging worth studying. Test your title in the feed.</p></div>
+      <div class="bar">
+        <input class="url" id="urlInput" placeholder="Paste a YouTube URL…">
+        <input class="alt" id="altTitle" placeholder="Try a different title (optional)">
+        <button class="btn" id="savePkg">Save packaging</button>
+      </div>
+      <div class="bar">
+        <button class="btn ghost sm">Import Chrome saves</button>
+        <button class="btn ghost sm">Export collection</button>
+        <button class="btn ghost sm">Import collection</button>
+        <input class="url" placeholder="Find a title or channel…">
+      </div>
+      <details class="ext">
+        <summary>Connect the Chrome extension</summary>
+        <p>Install the Brand C Chrome extension to capture a thumbnail straight from YouTube. Saved packaging syncs back into this gallery automatically.</p>
+      </details>
+      <div class="tgrid" id="tgrid"></div>
+      <div class="note" id="tgEmpty" style="display:none">Your next idea can start with one good reference. Save a video above or capture one from YouTube.</div>
+      <div class="note">References stay private to this workspace. Pick one in the Packaging Studio to turn it into your own thumbnail.</div>
+    </section>
+
+    <!-- PACKAGING STUDIO -->
+    <section class="view" id="packaging">
+      <div class="vh"><h1>Packaging studio</h1><p>Build, compare, and attach thumbnail packages. Reference in, your version out.</p></div>
+      <div class="pkg">
+        <div class="card pad">
+          <div class="field"><label>Reference thumbnail URL</label><input id="refUrl" value="https://i.ytimg.com/vi/…/maxresdefault.jpg" placeholder="Paste a thumbnail or image URL to emulate"></div>
+          <div class="field"><label>Video / post title</label><input id="pkgTitle" placeholder="e.g. Why your competitors show above you"></div>
+          <div class="field">
+            <label>Face expression (creator cutout)</label>
+            <div class="face-picker" id="facePicker">
+              <div class="fchip on" data-face="Pointing up" data-img="assets/faces/Pointing up.png">
+                <img src="assets/faces/Pointing up.png" alt="Pointing up">
+                <span>Pointing up</span>
+              </div>
+              <div class="fchip" data-face="Smile" data-img="assets/faces/smile.png">
+                <img src="assets/faces/smile.png" alt="Smile">
+                <span>Smile</span>
+              </div>
+              <div class="fchip" data-face="Serious" data-img="assets/faces/serious.png">
+                <img src="assets/faces/serious.png" alt="Serious">
+                <span>Serious</span>
+              </div>
+              <div class="fchip" data-face="Shocked" data-img="assets/faces/shocked1.png">
+                <img src="assets/faces/shocked1.png" alt="Shocked">
+                <span>Shocked</span>
+              </div>
+              <div class="fchip" data-face="Yea right" data-img="assets/faces/yea right.png">
+                <img src="assets/faces/yea right.png" alt="Yea right">
+                <span>Yea right</span>
+              </div>
+              <div class="fchip" data-face="Idk" data-img="assets/faces/idk.png">
+                <img src="assets/faces/idk.png" alt="Idk">
+                <span>Idk</span>
+              </div>
+            </div>
+            <input type="hidden" id="selectedFace" value="Pointing up">
+          </div>
+          <div class="field"><label>What should change</label><textarea id="pkgChange">Keep the composition, use my face (Pointing up), make the expression confident.</textarea></div>
+          <div class="field"><label>Attach to</label><select><option>Blog: Map Pack explainer</option><option>Reel: Missed call = missed job</option><option>None — keep as reference</option></select></div>
+          <button class="btn" id="genThumb">Generate thumbnail variants</button>
+        </div>
+        <div>
+          <div class="previews">
+            <div class="pv"><div class="pvhd">Reference</div><div class="pvb" id="pvRef">reference image</div></div>
+            <div class="pv"><div class="pvhd">Your thumbnail</div><div class="pvb" id="pvOut">generate to preview</div></div>
+          </div>
+          <div class="note" style="margin-top:14px">Pairs with the Thumbnail gallery. Uses your Brand assets (face, logo, colors) automatically.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRAND ASSETS -->
+    <section class="view" id="assets">
+      <div class="vh"><h1>Brand assets</h1><p>Live view of the selected brand’s Marketing Agent OS asset folder. Add assets here or in the folder; changes appear in this view automatically.</p></div>
+      <div class="asset-controls">
+        <label class="asset-control">Brand
+          <select id="assetBrandSelect">
+            <option value="brand-a">Brand A</option>
+            <option value="brand-b">Brand B</option>
+            <option value="brand-c">Brand C</option>
+          </select>
+        </label>
+        <label class="asset-control">Save new asset to
+          <select id="assetCategorySelect">
+            <option value="logos">Logos</option>
+            <option value="brand-guidelines">Brand guidelines</option>
+            <option value="product-shots">Product shots</option>
+            <option value="studio-shots">Studio shots</option>
+            <option value="social-post-images">Social · post images</option>
+            <option value="social-thumbnails">Social · thumbnails</option>
+            <option value="social-covers-banners">Social · covers / banners</option>
+            <option value="finished-outputs">Finished outputs</option>
+          </select>
+        </label>
+        <span class="asset-sync" id="assetSyncStatus" role="status" aria-live="polite">Connecting to local asset library…</span>
+        <button class="btn ghost sm" id="refreshAssets" type="button">Refresh</button>
+        <button class="btn sm" id="addAsset" type="button">+ Add asset</button>
+        <input id="assetFileInput" type="file" accept=".png,.jpg,.jpeg,.gif,.webp,.svg,.mp4,.webm,.mov,.pdf" hidden>
+      </div>
+      <div class="bar"><span class="pill" id="assetCount">Loading assets…</span><span class="sp"></span><span class="tag" id="assetFolderHint">Writes only to the selected brand’s assets folder</span></div>
+      <div class="agrid" id="agrid" aria-live="polite"></div>
+      <div class="note">Brand folders in the Marketing Agent OS are the source of truth. The Hub does not duplicate or delete files. Uploads never overwrite an existing filename; outside edits appear within about 15 seconds.</div>
+    </section>
+
+    <!-- CONNECTIONS / BRAND SETTINGS -->
+    <section class="view" id="connections">
+      <div class="vh"><h1>Settings &amp; Brand Profiles</h1><p>Profile settings follow the selected Content Hub brand. These are separate from the Lead Generation Dashboard.</p></div>
+      <div class="conn-grid">
+        <div class="conn">
+          <h3>Postiz — scheduler</h3>
+          <p>Postiz settings are not connected yet. No credentials are stored and no content is sent or published from this panel.</p>
+          <div class="field"><label>Postiz URL</label><input value="http://localhost:4007" disabled></div>
+          <div class="field"><label>Postiz API token</label><input type="password" placeholder="Not connected" disabled></div>
+          <div class="field"><label>Postiz integration IDs</label><input placeholder="Not connected" disabled></div>
+          <div class="state"><span class="dot"></span> Not connected · no publishing action</div>
+        </div>
+      </div>
+      <section class="conn" aria-labelledby="brandProfileHeading">
+        <div class="brand-profile-header">
+          <h3 id="brandProfileHeading">Brand voice profile</h3>
+          <span class="pill" id="brandProfileBrandLabel">Loading selected brand…</span>
+        </div>
+        <p>Loaded from the selected brand’s Marketing Agent OS profile documents. Saving creates a Content Hub-only override in local SQLite. Source Markdown files are unchanged.</p>
+        <form id="brandProfileForm">
+          <div class="brand-profile-grid">
+            <div class="field"><label for="brandProfileVoiceStyle">Voice &amp; style</label><textarea id="brandProfileVoiceStyle" maxlength="20000" rows="5"></textarea></div>
+            <div class="field"><label for="brandProfileAudience">Audience</label><textarea id="brandProfileAudience" maxlength="20000" rows="5"></textarea></div>
+            <div class="field"><label for="brandProfileOfferAndLinks">Offer &amp; links</label><textarea id="brandProfileOfferAndLinks" maxlength="20000" rows="5"></textarea></div>
+            <div class="field"><label for="brandProfileCtaStyle">CTA style</label><textarea id="brandProfileCtaStyle" maxlength="20000" rows="4"></textarea></div>
+            <div class="field"><label for="brandProfileNeverUse">Never use</label><textarea id="brandProfileNeverUse" maxlength="20000" rows="4"></textarea></div>
+            <div class="field"><label for="brandProfileContentPillars">Content pillars</label><textarea id="brandProfileContentPillars" maxlength="20000" rows="5"></textarea></div>
+            <div class="field full"><label for="brandProfilePositioning">Positioning (Three P’s)</label><textarea id="brandProfilePositioning" maxlength="20000" rows="6"></textarea></div>
+          </div>
+          <div class="brand-profile-meta" id="brandProfileSourceFiles">Loading profile source files…</div>
+          <div class="brand-profile-status" id="brandProfileStatus" role="status" aria-live="polite">Loading profile…</div>
+          <div class="brand-profile-actions">
+            <button class="btn ghost" id="resetBrandProfile" type="button">Reset to source profile</button>
+            <button class="btn" type="submit">Save brand profile</button>
+          </div>
+        </form>
+      </section>
+      <div class="note">Profile edits stay in this Content Hub installation and do not change Marketing Agent OS files or Lead Generation Dashboard settings. Profile context is available per selected brand; the current rule-based draft organizers do not automatically rewrite drafts from it.</div>
+    </section>
+  </div>
+</div>
+
+<dialog class="content-dialog" id="contentSubmitDialog" aria-labelledby="contentSubmitTitle">
+  <form id="contentSubmitForm">
+    <h2 id="contentSubmitTitle">Submit a draft copy for review</h2>
+    <p id="contentSubmitIntro">This creates a separate shared copy. The browser-local draft remains unchanged.</p>
+    <div class="field"><label>Brand</label><div id="contentSubmitBrand" class="pill"></div></div>
+    <div class="field"><label for="contentSubmitDate">Calendar target date (optional)</label><input id="contentSubmitDate" type="date"></div>
+    <div class="content-submit-copy" id="contentSubmitPreview"></div>
+    <div class="dialog-status" id="contentSubmitStatus" role="status" aria-live="polite"></div>
+    <div class="dialog-actions">
+      <button class="btn ghost" id="contentSubmitCancel" type="button">Cancel</button>
+      <button class="btn" id="contentSubmitConfirm" type="submit">Submit copy to Approvals</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  // Nav switching
+  const views = document.querySelectorAll('.view');
+  const links = document.querySelectorAll('.nav a');
+  function go(name){
+    views.forEach(v=>v.classList.toggle('on', v.id===name));
+    links.forEach(a=>a.classList.toggle('on', a.dataset.view===name));
+    if(name==='assets') loadBrandAssets(true);
+    if(name==='connections') window.BrandProfiles?.load();
+    if(['blog','reels','email'].includes(name)) window.ChannelEditors?.refresh();
+    if(name==='reporting') window.Reporting?.refresh();
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  links.forEach(a=>a.addEventListener('click', e=>{e.preventDefault(); go(a.dataset.view);}));
+  document.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', e=>{e.preventDefault(); go(el.dataset.go);}));
+
+  // ---- Social Studio: local, editable starters only; never publishes ----
+  const socialDraftStorageKey = 'contentHub.socialDrafts.v1';
+  const socialXFormatConfig = {
+    post:{label:'X Post'},
+    thread:{label:'X Thread'},
+    article:{label:'X Article'}
+  };
+  const socialPlatformConfig = {
+    facebook:{label:'Facebook',mark:'f',color:'#0866FF',tint:'rgba(8,102,255,.13)',maxLength:null},
+    instagram:{label:'Instagram',mark:'◎',color:'#E1306C',tint:'rgba(225,48,108,.13)',maxLength:2200},
+    linkedin:{label:'LinkedIn',mark:'in',color:'#0A66C2',tint:'rgba(10,102,194,.14)',maxLength:3000},
+    x:{label:'X',mark:'X',color:'var(--ink)',tint:'rgba(255,255,255,.08)',maxLength:null}
+  };
+  const socialPlatformOrder = Object.keys(socialPlatformConfig);
+  const socialBriefInput = document.getElementById('socialBrief');
+  const socialBriefCount = document.getElementById('socialBriefCount');
+  const socialDraftStatus = document.getElementById('socialDraftStatus');
+  const socialDraftOutputs = document.getElementById('socialDraftOutputs');
+  const socialDraftEmpty = document.getElementById('socialDraftEmpty');
+  const socialPlatformInputs = Array.from(document.querySelectorAll('input[name="socialPlatform"]'));
+  const socialXFormatInput = document.getElementById('socialXFormat');
+  const socialXFormatField = document.getElementById('socialXFormatField');
+
+  function loadSocialDraftState(){
+    const emptyState = {brief:'',selected:[],drafts:{},xFormat:'post'};
+    try{
+      const saved = JSON.parse(localStorage.getItem(socialDraftStorageKey) || 'null');
+      if(!saved || typeof saved !== 'object' || Array.isArray(saved)) return emptyState;
+      const selectedValues = Array.isArray(saved.selected) ? saved.selected : [];
+      const selected = socialPlatformOrder.filter(platform=>selectedValues.includes(platform));
+      const drafts = {};
+      if(saved.drafts && typeof saved.drafts === 'object' && !Array.isArray(saved.drafts)){
+        Object.entries(saved.drafts).forEach(([platform, text])=>{
+          if(typeof text !== 'string') return;
+          if(platform === 'x'){
+            drafts['x:post'] = text;
+          }else if(platform.startsWith('x:') && Object.prototype.hasOwnProperty.call(socialXFormatConfig, platform.slice(2))){
+            drafts[platform] = text;
+          }else if(socialPlatformOrder.includes(platform) && platform !== 'x'){
+            drafts[platform] = text;
+          }
+        });
+      }
+      const xFormat = Object.prototype.hasOwnProperty.call(socialXFormatConfig, saved.xFormat) ? saved.xFormat : 'post';
+      return {brief:typeof saved.brief === 'string' ? saved.brief : '',selected,drafts,xFormat};
+    }catch(error){
+      return emptyState;
+    }
+  }
+
+  let socialDraftState = loadSocialDraftState();
+
+  function setSocialStatus(message, isError=false){
+    if(!socialDraftStatus) return;
+    socialDraftStatus.textContent = message;
+    socialDraftStatus.classList.toggle('error', isError);
+  }
+
+  function saveSocialDraftState(){
+    try{
+      localStorage.setItem(socialDraftStorageKey, JSON.stringify(socialDraftState));
+      return true;
+    }catch(error){
+      return false;
+    }
+  }
+
+  function getSocialDraftKey(platform){
+    return platform === 'x' ? `x:${socialDraftState.xFormat}` : platform;
+  }
+
+  function getSocialDraftLabel(platform){
+    return platform === 'x'
+      ? `${socialPlatformConfig.x.label} · ${socialXFormatConfig[socialDraftState.xFormat].label}`
+      : socialPlatformConfig[platform].label;
+  }
+
+  function makeSocialStarterDraft(platform, brief, format='post'){
+    const source = brief.trim();
+    if(platform === 'facebook') return `${source}\n\nWhat do you think? Share your experience below.`;
+    if(platform === 'instagram') return `${source}\n\nSave this post for later.`;
+    if(platform === 'linkedin') return `A practical takeaway:\n\n${source}\n\nHow are you approaching this?`;
+    if(platform === 'x' && format === 'thread'){
+      return `1/ ${source}\n\n2/ [Add a supporting proof point or example]\n\n3/ [Add a practical takeaway]\n\n4/ [Add a clear next step or CTA]`;
+    }
+    if(platform === 'x' && format === 'article'){
+      return `# [Add a clear article title]\n\n${source}\n\n## [Add a supporting section]\n\n[Add examples, evidence, and a conclusion.]`;
+    }
+    if(platform === 'x'){
+      if(source.length <= 280) return source;
+      return `${source.slice(0,279).trimEnd()}…`;
+    }
+    return source;
+  }
+
+  function updateSocialBriefCount(){
+    if(socialBriefCount && socialBriefInput) socialBriefCount.textContent = `${socialBriefInput.value.length} / 2000 characters`;
+  }
+
+  function getSocialCharacterMeta(platform, format, text){
+    if(platform === 'x' && format === 'thread'){
+      const posts = text.split(/\n\s*\n/).filter(post=>post.trim());
+      const overLimit = posts.filter(post=>post.length > 280).length;
+      return {text:`${posts.length} posts · ${overLimit ? `${overLimit} over 280 characters` : '280 characters max per post'}`,overLimit:overLimit > 0};
+    }
+    const limit = platform === 'x' ? (format === 'post' ? 280 : null) : socialPlatformConfig[platform].maxLength;
+    return {
+      text:limit ? `${text.length} / ${limit} characters` : `${text.length} characters`,
+      overLimit:!!limit && text.length > limit
+    };
+  }
+
+  function createSocialDraftCard(platform){
+    const config = socialPlatformConfig[platform];
+    const format = platform === 'x' ? socialDraftState.xFormat : 'post';
+    const draftKey = getSocialDraftKey(platform);
+    const card = document.createElement('article');
+    card.className = 'social-draft-card';
+    card.dataset.platform = platform;
+    card.dataset.format = format;
+
+    const heading = document.createElement('div');
+    heading.className = 'social-draft-head';
+    const mark = document.createElement('span');
+    mark.className = 'platform-mark';
+    mark.textContent = config.mark;
+    mark.setAttribute('aria-hidden','true');
+    mark.style.setProperty('--platform-color', config.color);
+    mark.style.setProperty('--platform-tint', config.tint);
+    const title = document.createElement('h3');
+    title.textContent = platform === 'x' ? getSocialDraftLabel(platform) : `${config.label} draft`;
+    const badge = document.createElement('span');
+    badge.className = 'tag';
+    badge.textContent = 'Starter · editable';
+    heading.append(mark, title, badge);
+
+    const field = document.createElement('div');
+    field.className = 'field social-draft-field';
+    const label = document.createElement('label');
+    const inputId = `socialDraft-${platform}-${format}`;
+    label.htmlFor = inputId;
+    label.textContent = platform === 'x' && format === 'thread' ? 'Thread copy (separate posts with a blank line)' : 'Draft copy';
+    const textarea = document.createElement('textarea');
+    textarea.id = inputId;
+    textarea.rows = 6;
+    textarea.value = socialDraftState.drafts[draftKey] || '';
+    const counter = document.createElement('div');
+    counter.className = 'social-draft-meta';
+    field.append(label, textarea, counter);
+    const submitButton = document.createElement('button');
+    submitButton.type = 'button';
+    submitButton.className = 'act primary organizer-submit';
+    submitButton.textContent = 'Submit for review';
+    submitButton.addEventListener('click', ()=>{
+      if(!window.ContentHub || typeof window.ContentHub.submitDraft !== 'function'){
+        setSocialStatus('The shared content service is not ready. Refresh the page and retry.', true);
+        return;
+      }
+      const formatByPlatform = {
+        facebook:'facebook-post', instagram:'instagram-caption', linkedin:'linkedin-post'
+      };
+      window.ContentHub.submitDraft({
+        title:`${getSocialDraftLabel(platform)} draft`,
+        contentType:'social',
+        channel:platform,
+        format:platform === 'x' ? `x-${format}` : formatByPlatform[platform],
+        body:textarea.value,
+        brief:socialDraftState.brief,
+        sourceModule:'social-studio',
+        sourceId:draftKey
+      });
+    });
+    card.append(heading, field, submitButton);
+
+    function updateCounter(){
+      const meta = getSocialCharacterMeta(platform, format, textarea.value);
+      counter.textContent = meta.text;
+      counter.classList.toggle('over-limit', meta.overLimit);
+    }
+    textarea.addEventListener('input', ()=>{
+      socialDraftState.drafts[draftKey] = textarea.value;
+      if(!saveSocialDraftState()) setSocialStatus('Browser storage is unavailable; this edit may not persist after closing the page.', true);
+      updateCounter();
+    });
+    updateCounter();
+    return card;
+  }
+
+  function renderSocialDrafts(){
+    if(!socialDraftOutputs || !socialDraftEmpty) return;
+    socialDraftOutputs.replaceChildren();
+    const selected = socialDraftState.selected.filter(platform=>socialPlatformOrder.includes(platform));
+    const entries = selected.map(platform=>({platform,key:getSocialDraftKey(platform)}));
+    const availableDrafts = entries.filter(entry=>Object.prototype.hasOwnProperty.call(socialDraftState.drafts, entry.key));
+    availableDrafts.forEach(({platform})=>socialDraftOutputs.append(createSocialDraftCard(platform)));
+    const pending = entries.filter(entry=>!Object.prototype.hasOwnProperty.call(socialDraftState.drafts, entry.key));
+    if(!selected.length){
+      socialDraftEmpty.textContent = 'Choose one or more platforms and add a shared brief to get started.';
+      socialDraftEmpty.hidden = false;
+    }else if(!availableDrafts.length){
+      socialDraftEmpty.textContent = 'Add a shared brief, then create editable starter drafts for your selected platforms.';
+      socialDraftEmpty.hidden = false;
+    }else if(pending.length){
+      socialDraftEmpty.textContent = `No draft yet for ${pending.map(({platform})=>getSocialDraftLabel(platform)).join(', ')}. Create draft versions to add it.`;
+      socialDraftEmpty.hidden = false;
+    }else{
+      socialDraftEmpty.hidden = true;
+    }
+  }
+
+  function updateSocialXFormatVisibility(){
+    if(!socialXFormatField) return;
+    socialXFormatField.hidden = !socialPlatformInputs.some(input=>input.value === 'x' && input.checked);
+  }
+
+  if(socialBriefInput){
+    socialBriefInput.value = socialDraftState.brief;
+    updateSocialBriefCount();
+    socialBriefInput.addEventListener('input', ()=>{
+      socialDraftState.brief = socialBriefInput.value;
+      updateSocialBriefCount();
+      if(!saveSocialDraftState()) setSocialStatus('Browser storage is unavailable; this brief may not persist after closing the page.', true);
+    });
+  }
+
+  if(socialXFormatInput){
+    socialXFormatInput.value = socialDraftState.xFormat;
+    socialXFormatInput.addEventListener('change', ()=>{
+      if(!Object.prototype.hasOwnProperty.call(socialXFormatConfig, socialXFormatInput.value)) return;
+      socialDraftState.xFormat = socialXFormatInput.value;
+      if(!saveSocialDraftState()) setSocialStatus('Browser storage is unavailable; your format choice may not persist after closing the page.', true);
+      renderSocialDrafts();
+    });
+  }
+
+  socialPlatformInputs.forEach(input=>{
+    input.checked = socialDraftState.selected.includes(input.value);
+    input.closest('.social-platform')?.classList.toggle('selected', input.checked);
+    input.addEventListener('change', ()=>{
+      socialDraftState.selected = socialPlatformInputs.filter(option=>option.checked).map(option=>option.value);
+      input.closest('.social-platform')?.classList.toggle('selected', input.checked);
+      updateSocialXFormatVisibility();
+      if(!saveSocialDraftState()) setSocialStatus('Browser storage is unavailable; platform selections may not persist after closing the page.', true);
+      renderSocialDrafts();
+    });
+  });
+  updateSocialXFormatVisibility();
+
+  document.getElementById('createSocialDrafts')?.addEventListener('click', ()=>{
+    const brief = socialBriefInput?.value.trim() || '';
+    const selected = socialPlatformInputs.filter(input=>input.checked).map(input=>input.value);
+    if(!brief){ setSocialStatus('Add a shared brief before creating drafts.', true); return; }
+    if(!selected.length){ setSocialStatus('Select at least one platform before creating drafts.', true); return; }
+    socialDraftState.brief = socialBriefInput.value;
+    socialDraftState.selected = selected;
+    const created = [];
+    const preserved = [];
+    selected.forEach(platform=>{
+      const draftKey = getSocialDraftKey(platform);
+      const format = platform === 'x' ? socialDraftState.xFormat : 'post';
+      if(Object.prototype.hasOwnProperty.call(socialDraftState.drafts, draftKey)){
+        preserved.push(getSocialDraftLabel(platform));
+      }else{
+        socialDraftState.drafts[draftKey] = makeSocialStarterDraft(platform, brief, format);
+        created.push(getSocialDraftLabel(platform));
+      }
+    });
+    const saved = saveSocialDraftState();
+    renderSocialDrafts();
+    const message = created.length
+      ? `Created editable starter drafts for ${created.join(', ')}.${preserved.length ? ` Kept existing edits for ${preserved.join(', ')}.` : ''}`
+      : 'Existing drafts were kept so your edits are not overwritten. Clear drafts to start a fresh set.';
+    setSocialStatus(saved ? `${message} Saved in this browser; nothing was published.` : `${message} Browser storage is unavailable, so changes may not persist after closing the page.`, !saved);
+  });
+
+  document.getElementById('clearSocialDrafts')?.addEventListener('click', ()=>{
+    if(!Object.keys(socialDraftState.drafts).length){ setSocialStatus('There are no saved drafts to clear.'); return; }
+    if(!window.confirm('Clear all locally saved Social Studio drafts? This does not affect published content.')) return;
+    socialDraftState.drafts = {};
+    const saved = saveSocialDraftState();
+    renderSocialDrafts();
+    setSocialStatus(saved ? 'Saved drafts cleared. Your brief and platform choices were kept.' : 'Drafts were cleared on this page, but browser storage could not be updated.', !saved);
+  });
+
+  renderSocialDrafts();
+
+  // Theme switch
+  document.getElementById('themeBtn')?.addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+  });
+
+  // Shared review actions and the calendar are driven by content-records.js.
+
+  // ---- Capability dropdown ----
+  const capBtn=document.getElementById('capBtn');
+  const capMenu=document.getElementById('capMenu');
+  capBtn.addEventListener('click', e=>{e.stopPropagation(); capMenu.classList.toggle('on'); capBtn.classList.toggle('open');});
+  capMenu.querySelectorAll('[data-go]').forEach(el=>el.addEventListener('click', e=>{e.preventDefault(); capMenu.classList.remove('on'); capBtn.classList.remove('open'); go(el.dataset.go);}));
+  document.addEventListener('click', ()=>{capMenu.classList.remove('on'); capBtn.classList.remove('open');});
+
+  // Face picker interaction
+  const facePicker = document.getElementById('facePicker');
+  const selectedFaceInput = document.getElementById('selectedFace');
+  const pkgChange = document.getElementById('pkgChange');
+  function selectFace(faceName){
+    if(!facePicker) return;
+    const chips = facePicker.querySelectorAll('.fchip');
+    chips.forEach(chip => {
+      chip.classList.toggle('on', chip.dataset.face.toLowerCase() === faceName.toLowerCase());
+    });
+    if(selectedFaceInput) selectedFaceInput.value = faceName;
+    if(pkgChange){
+      // Update note inside pkgChange textarea to reference the face expression
+      pkgChange.value = `Keep the composition, use my face (${faceName}), make the expression fit the hook.`;
+    }
+  }
+  if(facePicker){
+    facePicker.querySelectorAll('.fchip').forEach(chip => {
+      chip.addEventListener('click', ()=>{
+        selectFace(chip.dataset.face);
+      });
+    });
+  }
+
+  // Helper to extract YouTube video ID or preview
+  function getYouTubeThumbnail(url){
+    if(!url) return '';
+    const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    if(match && match[2].length === 11){
+      return `https://i.ytimg.com/vi/${match[2]}/mqdefault.jpg`;
+    }
+    if(url.startsWith('http') && (url.includes('.jpg') || url.includes('.png') || url.includes('.webp'))){
+      return url;
+    }
+    return '';
+  }
+
+  function updateRefPreview(url){
+    const pvRef = document.getElementById('pvRef');
+    if(!pvRef) return;
+    const thumb = getYouTubeThumbnail(url);
+    if(thumb){
+      pvRef.innerHTML = `<img src="${thumb}" alt="Reference preview">`;
+    } else {
+      pvRef.innerHTML = 'reference image';
+    }
+  }
+
+  // Update preview when refUrl input changes
+  document.getElementById('refUrl')?.addEventListener('input', (e)=>{
+    updateRefPreview(e.target.value.trim());
+  });
+
+  // ---- Thumbnail gallery ----
+  let savedPkgs = [
+    {
+      url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      title:'5 Signs AI Is Taking Over Google Search',
+      altTitle:'Why Your Business Is Invisible On AI Search',
+      face:'Shocked',
+      ch:'Brand A',
+      time:'2 days ago'
+    },
+    {
+      url:'https://www.youtube.com/watch?v=7x1x1x1x1x1',
+      title:'How We Hit Page 1 Without Backlinks',
+      altTitle:'Rank #1 Fast (Without Buying Links)',
+      face:'Pointing up',
+      ch:'SEO Lab',
+      time:'4 days ago'
+    },
+    {
+      url:'https://www.youtube.com/watch?v=9y2y2y2y2y2',
+      title:'The One-Person AI Agency Workflow',
+      altTitle:'Run A Full Marketing Team With One AI Agent',
+      face:'Smile',
+      ch:'AI Hustle',
+      time:'1 week ago'
+    }
+  ];
+
+  function renderThumbs(){
+    const tg = document.getElementById('tgrid');
+    const empty = document.getElementById('tgEmpty');
+    if(!savedPkgs.length){
+      tg.innerHTML = '';
+      if(empty) empty.style.display = 'block';
+      return;
+    }
+    if(empty) empty.style.display = 'none';
+    tg.innerHTML = savedPkgs.map((p, i)=>{
+      const ytImg = getYouTubeThumbnail(p.url);
+      const imgHtml = ytImg ? `<img src="${ytImg}" alt="${p.title}">` : '';
+      return `
+      <div class="tcard" data-idx="${i}">
+        <div class="tt-img">
+          ${imgHtml}
+          <span class="cm">1280×720</span>
+          <div style="position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.7);font-size:10px;padding:2px 6px;border-radius:4px;z-index:2">Reference</div>
+        </div>
+        <div class="tt-b">
+          <div class="h">${p.altTitle ? `<span style="color:var(--gold);font-size:11px;display:block;margin-bottom:2px">Test title:</span>`+p.altTitle : p.title}</div>
+          <div style="font-size:11px;color:var(--ink-4);margin-top:4px;">Original: "${p.title}"</div>
+          ${p.face ? `<div style="font-size:11px;color:var(--gold);margin-top:4px;">Face: <b>${p.face}</b></div>` : ''}
+          <div class="m">
+            <span>${p.ch}</span>
+            <span class="out">${p.time}</span>
+            <span style="margin-left:auto;color:var(--danger);cursor:pointer;" data-del="${i}" title="Delete">✕</span>
+          </div>
+          <button class="test-pkg-btn" data-test="${i}">✦ Test packaging in Studio →</button>
+        </div>
+      </div>
+    `;}).join('');
+
+    tg.querySelectorAll('[data-del]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        savedPkgs.splice(+el.dataset.del, 1);
+        renderThumbs();
+      });
+    });
+
+    function handoffToPackaging(item){
+      if(!item) return;
+      const refInput = document.getElementById('refUrl');
+      const titleInput = document.getElementById('pkgTitle');
+      if(refInput) {
+        refInput.value = item.url;
+        updateRefPreview(item.url);
+      }
+      if(titleInput) {
+        titleInput.value = item.altTitle || item.title;
+      }
+      const recFace = item.face || 'Pointing up';
+      selectFace(recFace);
+      go('packaging');
+    }
+
+    tg.querySelectorAll('.tcard').forEach(c => {
+      c.addEventListener('click', (e) => {
+        if(e.target.closest('[data-del]')) return;
+        const item = savedPkgs[+c.dataset.idx];
+        handoffToPackaging(item);
+      });
+    });
+
+    tg.querySelectorAll('[data-test]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const item = savedPkgs[+btn.dataset.test];
+        handoffToPackaging(item);
+      });
+    });
+  }
+  renderThumbs();
+  updateRefPreview(document.getElementById('refUrl')?.value || '');
+
+  document.getElementById('savePkg')?.addEventListener('click', () => {
+    const url = document.getElementById('urlInput').value.trim();
+    const alt = document.getElementById('altTitle').value.trim();
+    if(!url){
+      alert('Please paste a YouTube URL');
+      return;
+    }
+    const detectedFace = alt.toLowerCase().includes('invisible') || alt.toLowerCase().includes('fear') ? 'Shocked' :
+                         alt.toLowerCase().includes('team') || alt.toLowerCase().includes('how') ? 'Smile' : 'Pointing up';
+    savedPkgs.unshift({
+      url: url,
+      title: 'YouTube Video Reference',
+      altTitle: alt || 'New packaging test',
+      face: detectedFace,
+      ch: 'Imported',
+      time: 'Just now'
+    });
+    document.getElementById('urlInput').value = '';
+    document.getElementById('altTitle').value = '';
+    renderThumbs();
+  });
+
+  // ---- Live brand asset library ----
+  const assetBrandSelect = document.getElementById('assetBrandSelect');
+  const assetCategorySelect = document.getElementById('assetCategorySelect');
+  const assetFileInput = document.getElementById('assetFileInput');
+  const assetSyncStatus = document.getElementById('assetSyncStatus');
+  const assetLabels = {'brand-a':'Brand A','brand-b':'Brand B','brand-c':'Brand C'};
+  const assetCategoryLabels = {
+    logos:'logos', 'brand-guidelines':'brand-guidelines', 'product-shots':'product-shots',
+    'studio-shots':'studio-shots', 'social-post-images':'social/post-images',
+    'social-thumbnails':'social/thumbnails', 'social-covers-banners':'social/covers-banners',
+    'finished-outputs':'outputs/social'
+  };
+  let assetLoadSequence = 0;
+
+  function setAssetStatus(message, state=''){
+    assetSyncStatus.textContent = message;
+    assetSyncStatus.className = `asset-sync ${state}`.trim();
+  }
+
+  function updateAssetFolderHint(){
+    const brand = assetBrandSelect.value;
+    const destination = assetCategoryLabels[assetCategorySelect.value] || 'assets';
+    document.getElementById('assetFolderHint').textContent = `Destination: brands/${brand}/assets/${destination}`;
+  }
+
+  function renderAssets(items, brand){
+    const grid = document.getElementById('agrid');
+    document.getElementById('assetCount').textContent = `${items.length} assets`;
+    grid.replaceChildren();
+    if(!items.length){
+      const empty = document.createElement('div');
+      empty.className = 'asset-empty';
+      const title = document.createElement('b');
+      title.textContent = `No visual assets found for ${assetLabels[brand] || brand}.`;
+      const detail = document.createElement('span');
+      detail.textContent = brand === 'brand-b'
+        ? 'Brand B’s Marketing Agent OS asset folder is currently empty. Add brand files here or upload them using the controls above.'
+        : 'Add supported visual files to this brand’s assets folder, or upload a file here. New folder changes are checked automatically.';
+      empty.append(title, detail);
+      grid.append(empty);
+      return;
+    }
+    items.forEach(asset=>{
+      const card = document.createElement('article');
+      card.className = 'asset';
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      if(asset.kind === 'image'){
+        const image = document.createElement('img');
+        image.src = asset.url;
+        image.alt = asset.name;
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        if(asset.category === 'logos' || asset.category.startsWith('logos/')) image.className = 'contain';
+        thumb.append(image);
+      } else {
+        const marker = document.createElement('span');
+        marker.textContent = asset.kind === 'video' ? '▶ VIDEO' : 'PDF';
+        marker.style.fontSize = '12px';
+        marker.style.fontWeight = '700';
+        thumb.append(marker);
+      }
+      const open = document.createElement('a');
+      open.className = 'asset-open';
+      open.href = asset.url;
+      open.target = '_blank';
+      open.rel = 'noopener noreferrer';
+      open.textContent = 'Open';
+      open.setAttribute('aria-label', `Open ${asset.name}`);
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const name = document.createElement('div');
+      name.className = 'an';
+      name.textContent = asset.name;
+      name.title = asset.name;
+      const location = document.createElement('div');
+      location.className = 'ak';
+      location.textContent = `assets/${asset.path} · ${asset.extension.toUpperCase()}`;
+      if(asset.review_required){
+        location.classList.add('review-needed');
+        location.textContent += ' · NEEDS OWNER REVIEW';
+      }
+      location.title = `Marketing Agent OS · brands/${brand}/assets/${asset.path}`;
+      meta.append(name, location);
+      card.append(thumb, open, meta);
+      grid.append(card);
+    });
+  }
+
+  async function loadBrandAssets(quiet=false){
+    const brand = assetBrandSelect.value;
+    const sequence = ++assetLoadSequence;
+    if(!quiet) setAssetStatus(`Loading ${assetLabels[brand] || brand} assets…`);
+    try{
+      const response = await fetch(`/api/assets?brand=${encodeURIComponent(brand)}`, {cache:'no-store'});
+      const payload = await response.json();
+      if(!response.ok) throw new Error(payload.error || 'Could not load brand assets.');
+      if(sequence !== assetLoadSequence || brand !== assetBrandSelect.value) return;
+      renderAssets(payload.assets || [], brand);
+      setAssetStatus(`Connected · ${assetLabels[brand] || brand} · refreshes every 15 seconds`, 'online');
+      updateAssetFolderHint();
+    }catch(error){
+      if(sequence !== assetLoadSequence || brand !== assetBrandSelect.value) return;
+      setAssetStatus('Asset service offline. Stop the old server and run: python server.py', 'offline');
+      document.getElementById('assetCount').textContent = 'Not connected';
+      const grid = document.getElementById('agrid');
+      grid.replaceChildren();
+      const message = document.createElement('div');
+      message.className = 'asset-empty';
+      const title = document.createElement('b');
+      title.textContent = 'Could not connect to the local asset service.';
+      const detail = document.createElement('span');
+      detail.textContent = error.message || 'Start server.py from the Content Hub folder, then refresh this view.';
+      message.append(title, detail);
+      grid.append(message);
+    }
+  }
+
+  async function initializeBrandAssets(){
+    try{
+      const response = await fetch('/api/brands', {cache:'no-store'});
+      const payload = await response.json();
+      if(!response.ok) throw new Error(payload.error || 'Could not read brand list.');
+      const brands = (payload.brands || []).filter(brand=>assetLabels[brand.id]);
+      if(!brands.length) throw new Error('No configured brand folders were returned.');
+      const activeBrandSelect = document.getElementById('activeBrandSelect');
+      const current = activeBrandSelect?.value || assetBrandSelect.value;
+      assetBrandSelect.replaceChildren();
+      brands.forEach(brand=>{
+        const option = document.createElement('option');
+        option.value = brand.id;
+        option.textContent = brand.label;
+        assetBrandSelect.append(option);
+      });
+      assetBrandSelect.value = brands.some(brand=>brand.id === current) ? current : brands[0].id;
+      await loadBrandAssets();
+    }catch(error){
+      setAssetStatus('Asset service offline. Stop the old server and run: python server.py', 'offline');
+      document.getElementById('assetCount').textContent = 'Not connected';
+    }
+  }
+
+  assetBrandSelect.addEventListener('change', ()=>{
+    const activeBrandSelect = document.getElementById('activeBrandSelect');
+    if(activeBrandSelect && activeBrandSelect.value !== assetBrandSelect.value){
+      activeBrandSelect.value = assetBrandSelect.value;
+      activeBrandSelect.dispatchEvent(new Event('change', {bubbles:true}));
+      return;
+    }
+    loadBrandAssets();
+  });
+  assetCategorySelect.addEventListener('change', updateAssetFolderHint);
+  document.getElementById('refreshAssets').addEventListener('click', ()=>loadBrandAssets());
+  document.getElementById('addAsset').addEventListener('click', ()=>assetFileInput.click());
+  assetFileInput.addEventListener('change', async()=>{
+    const file = assetFileInput.files?.[0];
+    if(!file) return;
+    if(file.size > 40 * 1024 * 1024){
+      setAssetStatus('File is larger than the 40 MB upload limit.', 'error');
+      assetFileInput.value = '';
+      return;
+    }
+    const brand = assetBrandSelect.value;
+    const category = assetCategorySelect.value;
+    setAssetStatus(`Uploading ${file.name}…`);
+    const query = new URLSearchParams({brand, category, name:file.name});
+    try{
+      const response = await fetch(`/api/upload?${query}`, {
+        method:'POST',
+        headers:{'Content-Type':file.type || 'application/octet-stream'},
+        body:file
+      });
+      const payload = await response.json();
+      if(!response.ok) throw new Error(payload.error || 'Upload failed.');
+      const savedMessage = `Saved to brands/${brand}/assets/${payload.asset.path}`;
+      await loadBrandAssets(true);
+      setAssetStatus(savedMessage, 'online');
+    }catch(error){
+      setAssetStatus(error.message || 'Upload failed. Start the local asset service and retry.', 'error');
+    }finally{
+      assetFileInput.value = '';
+    }
+  });
+  updateAssetFolderHint();
+  initializeBrandAssets();
+  setInterval(()=>{
+    if(document.visibilityState === 'visible' && document.getElementById('assets').classList.contains('on')){
+      loadBrandAssets(true);
+    }
+  }, 15000);
+
+  // ---- Packaging generate ----
+  document.getElementById('genThumb').addEventListener('click',()=>{
+    const out=document.getElementById('pvOut');
+    const titleVal = document.getElementById('pkgTitle')?.value || 'Why Your Business Is Invisible On AI Search';
+    const faceVal = document.getElementById('selectedFace')?.value || 'Pointing up';
+    const faceSrc = `assets/faces/${faceVal === 'Pointing up' ? 'Pointing up.png' :
+                     faceVal === 'Smile' ? 'smile.png' :
+                     faceVal === 'Serious' ? 'serious.png' :
+                     faceVal === 'Shocked' ? 'shocked1.png' :
+                     faceVal === 'Yea right' ? 'yea right.png' : 'idk.png'}`;
+
+    out.innerHTML = `
+      <div style="position:relative;width:100%;height:100%;background:linear-gradient(135deg,#0B0E14 0%,#1A2234 100%);display:flex;align-items:center;justify-content:space-between;padding:12px;overflow:hidden">
+        <div style="flex:1;z-index:2;padding-right:8px">
+          <div style="display:inline-block;background:var(--gold);color:#000;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;margin-bottom:6px;text-transform:uppercase">Sample Post</div>
+          <div style="font-family:var(--head);font-size:12px;font-weight:700;color:#fff;line-height:1.25">${titleVal}</div>
+        </div>
+        <div style="width:42%;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center;z-index:1">
+          <img src="${faceSrc}" alt="${faceVal}" style="max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))">
+        </div>
+        <div style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.7);font-size:9px;color:var(--gold);padding:2px 5px;border-radius:3px;z-index:3">Variant 1 · ${faceVal}</div>
+      </div>
+    `;
+  });
+</script>
+<script src="content-organizers.js"></script>
+<script src="content-records.js"></script>
+<script src="brand-profiles.js"></script>
+<script src="channel-editors.js"></script>
+<script src="reporting.js"></script>
+</body>
+</html>
