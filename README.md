@@ -7,6 +7,14 @@ runs on your machine.
 
 **Nothing publishes, sends, or schedules on its own — it is approval-first by design.**
 
+## Screenshots
+
+Captured in an isolated local workspace with an illustrative example draft. The draft was not published, and the images contain no private reporting data.
+
+| Get Started | Social Studio |
+| --- | --- |
+| ![Content Hub get started workspace](docs/screenshots/get-started.png) | ![Content Hub Social Studio with a local example draft](docs/screenshots/social-studio.png) |
+
 ## What it does
 
 - **Content intake → approval → packaging → distribution** — one pipeline, no content dump.
